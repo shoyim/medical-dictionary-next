@@ -43,7 +43,9 @@ export function MedicalTranslator({ dict }: { dict: any }) {
   };
 
   return (
-    <div className="w-full max-w-5xl mx-auto p-4">
+    <div className="w-full max-w-7xl mx-auto p-4">
+      <hr className="border-slate-200 dark:border-slate-800 my-8" />
+      <h1 className="text-2xl font-bold text-center mb-8">{dict.transition}</h1>
       <div className="bg-white dark:bg-slate-900 rounded-[2.5rem] shadow-2xl border border-slate-100 dark:border-slate-800 p-6 md:p-8 space-y-6">
         
         {/* TILLARNI TANLASH */}
