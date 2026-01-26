@@ -87,7 +87,7 @@ export const Header = async ({ dict, lang }: { dict: any; lang: string }) => {
                     <Link
                       key={link.href}
                       href={link.href}
-                      className="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors font-bold text-slate-700 dark:text-slate-200"
+                      className="flex items-center gap-4 px-4 py-1 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors font-bold text-slate-700 dark:text-slate-200"
                     >
                       <span className="text-blue-600">{link.icon}</span>
                       {link.label}
@@ -98,10 +98,9 @@ export const Header = async ({ dict, lang }: { dict: any; lang: string }) => {
                   
                   <Link 
                     href="https://t.me/shoyimobloqulov"
-                    className="flex items-center gap-4 px-4 py-3 rounded-xl bg-blue-50 dark:bg-blue-900/20 text-blue-600 font-bold"
+                    className="flex items-center gap-4 px-4 dark:bg-blue-900/20 text-blue-600 font-bold"
                   >
                     <Send className="h-5 w-5" />
-                    Telegram Contact
                   </Link>
                 </nav>
               </SheetContent>
