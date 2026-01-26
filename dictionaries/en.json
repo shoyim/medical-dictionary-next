@@ -1,0 +1,93 @@
+{
+    "siteName": "Medical Scientific Dictionary",
+    "siteDescription": "A multilingual professional dictionary of scientific terms, abbreviations, and concepts in the medical field. Accurate translations and scientifically based descriptions in one place.",
+    "siteAbbr": "MSD",
+    "updated_at": "Last updated",
+    "transition": "Translate",
+    "searching": "Searching...",
+    "common": {
+        "search_placeholder": "Enter medical term or keyword...",
+        "select_language": "Select language",
+        "all_languages": "All languages",
+        "loading": "Loading...",
+        "no_results": "No results found",
+        "last_updated": "Last updated"
+    },  
+    "nav": {
+        "about": "About Us",
+        "stats": "Statistics",
+        "author": "Author",
+        "terms": "Dictionaries",
+        "abbreviation": "Abbreviations"
+    },
+
+    "author": {
+        "title": "Project Author",
+        "desc": "Hello, I am a developer."
+    },
+    "terms": {
+        "title": "Terms of Use",
+        "desc": "Please read the terms of use carefully.",
+        "about": "About Dictionary"
+    },
+
+    "abbreviation": {
+        "title": "Dictionary of Medical Abbreviations",
+        "desc": "Search for medical abbreviations and their full forms."
+    },
+
+    "stats" : {
+        "title": "Dictionary Statistics",
+        "subtitle": "General statistics for all terms, abbreviations, and languages in the system.",
+        "last_update": "Last update",
+        "total_terms": "Total terms",
+        "total_languages": "Total languages",
+        "most_popular_language": "Most popular language",
+        "recently_added_terms": "Recently added terms"
+    },
+
+    "about": {
+        "ministry": "Ministry of Higher Education, Science and Innovations of the Republic of Uzbekistan",
+        "institute": "Samarkand State Institute of Foreign Languages",
+        "label_manual": "Study Guide",
+        "main_title": "Pathological Anatomy",
+        "subtitle": "Russian-English-Uzbek Medical Terminological Dictionary",
+        "pages": "pages",
+        "city_year": "Samarkand 2024",
+        "authors_title": "Authors and Developers",
+        "author_label": "Dictionary Author",
+        "author_name": "Shakhnoza Abdukhafizovna",
+        "author_desc": "Compiler and Scientific Director of the project",
+        "dev_label": "Software Development",
+        "dev_name": "Shoyim Oblokulov",
+        "dev_desc": "Digital Platform Developer",
+        "reviewers_title": "Reviewers",
+        "editorial_info": "This study guide for students of medical higher education institutions was prepared under the editorship of the Rector of Samarkand State Institute of Foreign Languages (SamSIFL), Doctor of Philological Sciences, Professor <strong>B.A. Kholikov</strong>.",
+        "resources_title": "Downloadable Resources",
+        "book1_title": "Pathological Anatomy",
+        "book2_title": "Russian-English Dictionary"
+    },
+
+    "footer": {
+        "navigation": "Navigation",
+        "home": "Home",
+        "terms": "Terms",
+        "abbreviations": "Abbreviations",
+        "statistics": "Statistics",
+        "about": "About Us",
+        "contact": "Contact",
+        "made_in": "Developed by: Shoyim Oblokulov"
+    },
+
+    "pagination": {
+        "previous": "Previous",
+        "next": "Next",
+        "page": "Page",
+        "of": "of",
+        "total": "Total",
+        "results": "Results",
+        "noResults": "No results found",
+        "loading": "Loading...",
+        "end": "terms"
+    }
+}

@@ -1,0 +1,54 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Language {
+  id         Int      @id @default(autoincrement())
+  code       String   @unique
+  name       String
+  flag       String   // Rasm URL manzili uchun
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("languages") // Bazadagi jadval nomi 'languages' ekanligini bildiradi
+}
+
+model MedicalTerm {
+  id           Int                      @id @default(autoincrement())
+  translations MedicalTermTranslation[]
+  created_at   DateTime                 @default(now())
+  updated_at   DateTime                 @updatedAt
+
+  @@map("medical_terms")
+}
+
+model MedicalTermTranslation {
+  id              Int         @id @default(autoincrement())
+  medical_term_id Int
+  language_id     Int
+  name            String      @db.VarChar(255)
+  description     String      @db.Text
+  term            MedicalTerm @relation(fields: [medical_term_id], references: [id])
+  created_at      DateTime    @default(now())
+  updated_at      DateTime    @updatedAt
+
+  @@map("medical_term_translations")
+}
+
+model Abbreviations {
+  id              Int         @id @default(autoincrement())
+  title           String
+  description     String      @db.Text
+  created_at      DateTime    @default(now())
+  updated_at      DateTime    @updatedAt
+
+  @@map("abbreviations")
+}
+
+
+

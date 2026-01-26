@@ -1,0 +1,93 @@
+{
+    "siteName": "Tibbiy Ilmiy Lug'at",
+    "siteDescription": "Tibbiyot sohasidagi ilmiy terminlar, qisqartmalar va tushunchalarning ko'p tilli professional lug'ati. Aniq tarjima va ilmiy asoslangan tavsiflar bir joyda.",
+    "siteAbbr": "TIL",
+    "updated_at": "So'nggi yangilanish",
+    "transition": "Tarjima qilish",
+    "searching": "Qidirilmoqda...",
+    "common": {
+        "search_placeholder": "Tibbiy atama yoki kalit so'zni kiriting...",
+        "select_language": "Tilni tanlang",
+        "all_languages": "Barcha tillar",
+        "loading": "Yuklanmoqda...",
+        "no_results": "Natija topilmadi",
+        "last_updated": "So'nggi yangilanish"
+    },  
+    "nav": {
+        "about": "Biz haqimizda",
+        "stats": "Statistika",
+        "author": "Muallif",
+        "terms": "Lug'atlar",
+        "abbreviation": "Qisqartmalar"
+    },
+
+    "author": {
+        "title": "Loyiha muallifi",
+        "desc": "Assalomu alaykum, men dasturchiman."
+    },
+    "terms": {
+        "title": "Foydalanish shartlari",
+        "desc": "Iltimos, foydalanish shartlarini diqqat bilan o'qing.",
+        "about": "Lug'at haqida"
+    },
+
+    "abbreviation": {
+        "title": "Tibbiy Qisqartmalar Lug'ati",
+        "desc": "Tibbiy qisqartmalar va ularning to'liq shakllarini qidiring."
+    },
+
+    "stats" : {
+        "title": "Lug'at Statistikasi",
+        "subtitle": "Tizimdagi barcha terminlar, qisqartmalar va tillar bo'yicha umumiy statistika.",
+        "last_update": "So'nggi yangilanish",
+        "total_terms": "Jami terminlar",
+        "total_languages": "Jami tillar",
+        "most_popular_language": "Eng mashhur til",
+        "recently_added_terms": "Yaqinda qo'shilgan terminlar"
+    },
+
+    "about": {
+        "ministry": "O'zbekiston Respublikasi Oliy ta'lim, fan va innovatsiyalar vazirligi",
+        "institute": "Samarqand davlat chet tillar instituti",
+        "label_manual": "O'quv qo'llanma",
+        "main_title": "Patologik anatomiya",
+        "subtitle": "Ruscha-Inglizcha-O'zbekcha tibbiy terminologik lug'at",
+        "pages": "bet",
+        "city_year": "Samarqand 2024",
+        "authors_title": "Mualliflar va Ishlab chiquvchilar",
+        "author_label": "Lug'at muallifi",
+        "author_name": "Shaxnoza Abduxafizovna",
+        "author_desc": "Tuzuvchi va loyihaning ilmiy rahbari",
+        "dev_label": "Dasturiy ta'minot",
+        "dev_name": "Shoyim Obloqulov",
+        "dev_desc": "Raqamli platforma ishlab chiquvchisi",
+        "reviewers_title": "Taqrizchilar",
+        "editorial_info": "Tibbiyot oliy o'quv yurtlari talabalari uchun o'quv qo'llanma «SamDCHTI» rektori, filologiya fanlari doktori, professor <strong>B.A. Xoliqov</strong> tahriri ostida tayyorlangan.",
+        "resources_title": "Yuklab olish uchun resurslar",
+        "book1_title": "Patologik anatomiya",
+        "book2_title": "Ruscha-inglizcha lug'at"
+    },
+
+    "footer": {
+        "navigation": "Navigatsiya",
+        "home": "Asosiy",
+        "terms": "Terminlar",
+        "abbreviations": "Qisqartmalar",
+        "statistics": "Statistika",
+        "about": "Biz haqimizda",
+        "contact": "Aloqa",
+        "made_in": "Developer by: Shoyim Obloqulov"
+    },
+
+    "pagination": {
+        "previous": "Oldingi",
+        "next": "Keyingi",
+        "page": "Sahifa",
+        "of": "dan",
+        "total": "Jami",
+        "results": "Natijalar",
+        "noResults": "Natija topilmadi"  ,
+        "loading": "Yuklanmoqda...",
+        "end":"ta termin"
+    }
+}
