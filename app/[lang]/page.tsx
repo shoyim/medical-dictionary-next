@@ -30,11 +30,12 @@ export default async function Page({ params }: { params: Promise<{ lang: string 
               {/* Rasmning o'zi: Yuqori-pastga suzuvchi animatsiya (floating) */}
               <div className="relative w-full h-full animate-bounce-slow">
                 <Image 
-                  src="undraw_doctors_djoj.svg" // Yuklab olgan rasm manzili
-                  alt="Medical Dictionary Illustration"
+                  src={`/undraw_doctors_djoj.svg?v=${new Date().getTime()}`} // Har safar har xil URL bo'ladi
+                  alt="Doctors"
                   fill
                   priority
-                  className="object-contain drop-shadow-2xl"
+                  unoptimized // Next.js keshiga ishonmaslik uchun
+                  className="object-contain"
                 />
               </div>
             </div>

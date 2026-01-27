@@ -8,6 +8,5 @@ export default async function TermsPage({ params }: { params: Promise<{ lang: st
 
   const dbLanguages = await getLanguages();
 
-  console.log('TermsPage - lang:', dict);
   return <MedicalDictionary initialLang={lang} dbLanguages={dbLanguages} dict={dict}/>;
 }

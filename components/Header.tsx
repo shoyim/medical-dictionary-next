@@ -16,6 +16,8 @@ import {
 export const Header = async ({ dict, lang }: { dict: any; lang: string }) => {
   const dbLanguages = await getLanguages() || ['uz', 'ru', 'en'];
 
+  console.log('Available languages:', dbLanguages);
+
   // Mobil menyu havolalari
   const mobileLinks = [
     { href: `/${lang}/about`, label: dict.nav.about, icon: <Info className="h-5 w-5" /> },

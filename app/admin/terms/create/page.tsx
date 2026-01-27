@@ -7,9 +7,18 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
+// 1. Ma'lumotlar turini ta'riflaymiz (TypeScript xatosini oldini olish uchun)
+interface Language {
+  id: number;
+  name: string;
+  code: string;
+}
+
 export default async function CreateTermPage() {
-  // Mavjud tillarni olamiz
-  const languages = await prisma.language.findMany();
+  // 2. Ma'lumotni bazadan olamiz va uni Language massivi sifatida belgilaymiz
+  const languages = await prisma.language.findMany({
+    orderBy: { name: "asc" },
+  }) as Language[];
 
   // Server Action: Ma'lumotni saqlash
   async function createTerm(formData: FormData) {
@@ -19,9 +28,11 @@ export default async function CreateTermPage() {
     const description = formData.get("description") as string;
     const languageId = formData.get("languageId") as string;
 
+    if (!name || !languageId) return;
+
     // 1. Avval asosiy MedicalTerm-ni yaratamiz
     const newTerm = await prisma.medicalTerm.create({
-      data: {} // Bo'sh obyekt, chunki asosiysi ID yaratish
+      data: {} 
     });
 
     // 2. Keyin uning tarjimasini yaratamiz
@@ -39,20 +50,24 @@ export default async function CreateTermPage() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-6 space-y-6">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <Link href="/admin/terms">
-            <Button variant="outline" size="icon" className="rounded-xl">
-              <ArrowLeft size={20} />
-            </Button>
-          </Link>
+    <div className="max-w-4xl mx-auto p-4 md:p-6 space-y-6">
+      {/* Sarlavha qismi */}
+      <div className="flex items-center gap-4">
+        <Link href="/admin/terms">
+          <Button variant="outline" size="icon" className="rounded-xl">
+            <ArrowLeft size={20} />
+          </Button>
+        </Link>
+        <div>
           <h1 className="text-2xl font-black text-slate-900">Yangi termin qo'shish</h1>
+          <p className="text-sm text-slate-500 font-medium">Lug'atga yangi ma'lumot kiritish</p>
         </div>
       </div>
 
-      <form action={createTerm} className="bg-white rounded-3xl border border-slate-200 p-8 shadow-sm space-y-6">
+      {/* Form qismi */}
+      <form action={createTerm} className="bg-white rounded-3xl border border-slate-200 p-6 md:p-8 shadow-sm space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          
           {/* Termin nomi */}
           <div className="space-y-2">
             <Label htmlFor="name" className="font-bold text-slate-700">Termin nomi</Label>
@@ -65,7 +80,7 @@ export default async function CreateTermPage() {
             />
           </div>
 
-          {/* Tilni tanlash */}
+          {/* Tilni tanlash - Xatolik shu yerda edi */}
           <div className="space-y-2">
             <Label htmlFor="languageId" className="font-bold text-slate-700">Til</Label>
             <select
@@ -75,7 +90,7 @@ export default async function CreateTermPage() {
               className="w-full h-12 px-3 rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium"
             >
               <option value="">Tilni tanlang...</option>
-              {languages.map((lang) => (
+              {languages.map((lang: Language) => (
                 <option key={lang.id} value={lang.id}>
                   {lang.name} ({lang.code})
                 </option>
@@ -84,27 +99,29 @@ export default async function CreateTermPage() {
           </div>
         </div>
 
-        {/* Tasnif (HTML yozish uchun) */}
+        {/* Tasnif matni */}
         <div className="space-y-2">
-          <Label htmlFor="description" className="font-bold text-slate-700">Tasnif (HTML formatida yozishingiz mumkin)</Label>
+          <Label htmlFor="description" className="font-bold text-slate-700">
+            Tasnif (Batafsil ma'lumot)
+          </Label>
           <textarea
             id="description"
             name="description"
             rows={8}
-            placeholder="Termin haqida batafsil ma'lumot... <p>Teglardan foydalansa bo'ladi</p>"
+            placeholder="Termin haqida batafsil ma'lumot yozing..."
             required
-            className="w-full p-4 rounded-2xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+            className="w-full p-4 rounded-2xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm leading-relaxed"
           ></textarea>
-          <p className="text-xs text-slate-400 italic font-medium">
-            Maslahat: HTML teglardan foydalaning, masalan: &lt;b&gt;bold&lt;/b&gt;, &lt;br/&gt; (yangi qator).
-          </p>
         </div>
 
-        <div className="flex justify-end gap-3 pt-4">
+        {/* Tugmalar */}
+        <div className="flex justify-end gap-3 pt-4 border-t border-slate-50">
           <Link href="/admin/terms">
-            <Button type="button" variant="ghost" className="rounded-xl font-bold">Bekor qilish</Button>
+            <Button type="button" variant="ghost" className="rounded-xl font-bold text-slate-500">
+              Bekor qilish
+            </Button>
           </Link>
-          <Button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white px-8 h-12 rounded-xl font-bold shadow-lg shadow-blue-100 flex gap-2">
+          <Button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white px-10 h-12 rounded-xl font-bold shadow-lg shadow-blue-100 flex gap-2 transition-all active:scale-95">
             <Save size={18} /> Saqlash
           </Button>
         </div>
