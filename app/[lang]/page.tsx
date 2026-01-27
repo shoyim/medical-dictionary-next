@@ -5,7 +5,7 @@ import { MedicalTranslator } from "@/components/Translator";
 export default async function Page({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params;
   const dict = await getDictionary(lang);
-  
+
   return (
     <main className="min-h-screen bg-white dark:bg-slate-950 transition-colors overflow-x-hidden">
       <div className="max-w-7xl mx-auto px-6 pt-16 pb-12">
