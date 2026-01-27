@@ -1,8 +1,5 @@
 import { getDictionary } from '@/lib/get-dictionary';
 import { MedicalTranslator } from "@/components/Translator";
-import { getLanguages } from '@/lib/actions';
-import Image from 'next/image';
-import { Book, BookAudio } from 'lucide-react';
 
 export default async function Page({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params;
