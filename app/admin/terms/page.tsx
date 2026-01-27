@@ -9,7 +9,7 @@ export default async function TermsPage() {
   const data = await prisma.medicalTermTranslation.findMany({
     include: {
       language: true,
-      term: true, 
+      term: true,
     },
     orderBy: {
       created_at: "desc",
