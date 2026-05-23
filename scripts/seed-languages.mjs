@@ -3,9 +3,9 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 const LANGUAGES = [
-  { code: 'uz', name: "O'zbek", flag: '🇺🇿' },
-  { code: 'ru', name: 'Русский', flag: '🇷🇺' },
-  { code: 'en', name: 'English', flag: '🇬🇧' },
+  { code: 'uz', name: "O'zbek", flag: 'https://flagsapi.com/UZ/flat/64.png' },
+  { code: 'ru', name: 'Русский', flag: 'https://flagsapi.com/RU/flat/64.png' },
+  { code: 'en', name: 'English', flag: 'https://flagsapi.com/GB/flat/64.png' },
 ];
 
 try {

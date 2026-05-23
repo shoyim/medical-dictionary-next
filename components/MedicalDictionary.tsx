@@ -121,13 +121,26 @@ export function MedicalDictionary({
         <div className="flex-shrink-0">
           <Select value={lang} onValueChange={(v) => { setLang(v); setSelectedLetter("A"); }}>
             <SelectTrigger className="h-11 w-full sm:w-44 rounded-xl border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 gap-2">
-              <Globe2 className="w-4 h-4 text-blue-600" />
+              {dbLanguages.find(l => l.code === lang)?.flag ? (
+                <img
+                  src={dbLanguages.find(l => l.code === lang)!.flag}
+                  alt={lang}
+                  className="w-5 h-4 object-cover rounded-sm flex-shrink-0"
+                />
+              ) : (
+                <Globe2 className="w-4 h-4 text-blue-600 flex-shrink-0" />
+              )}
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
               {dbLanguages.map((l) => (
                 <SelectItem key={l.id} value={l.code}>
-                  {l.flag} {l.name}
+                  <span className="flex items-center gap-2">
+                    {l.flag && (
+                      <img src={l.flag} alt={l.code} className="w-5 h-4 object-cover rounded-sm" />
+                    )}
+                    {l.name}
+                  </span>
                 </SelectItem>
               ))}
             </SelectContent>
