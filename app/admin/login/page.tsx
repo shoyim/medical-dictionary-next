@@ -5,7 +5,7 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Loader2, Lock } from "lucide-react";
+import { Loader2 } from "lucide-react";
 
 export default function AdminLogin() {
   const [email, setEmail] = useState("");
@@ -16,13 +16,11 @@ export default function AdminLogin() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-
     const res = await signIn("credentials", {
       email,
       password,
       redirect: false,
     });
-
     if (res?.ok) {
       router.push("/admin/dashboard");
       router.refresh();
@@ -33,47 +31,73 @@ export default function AdminLogin() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-slate-100 p-4">
-      <div className="w-full max-w-md space-y-8 bg-white p-10 rounded-3xl shadow-2xl border border-slate-200">
-        <div className="text-center space-y-2">
-          <div className="mx-auto bg-blue-100 text-blue-600 w-16 h-16 rounded-2xl flex items-center justify-center mb-4">
-            <Lock size={32} />
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-50 via-blue-50/30 to-slate-100 p-4">
+      <div className="w-full max-w-md">
+        {/* Logo */}
+        <div className="mb-8 text-center">
+          <div className="inline-flex items-center gap-2.5 mb-2">
+            <svg width="40" height="40" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
+              <rect width="36" height="36" rx="9" fill="#2563eb" />
+              <rect x="7" y="14.5" width="22" height="7" rx="2.5" fill="white" />
+              <rect x="14.5" y="7" width="7" height="22" rx="2.5" fill="white" />
+            </svg>
+            <div className="flex items-baseline gap-[1px]">
+              <span className="font-black text-2xl tracking-tight text-slate-900">med</span>
+              <span className="font-black text-2xl tracking-tight text-blue-600">term</span>
+              <span className="font-bold text-base text-slate-400">.uz</span>
+            </div>
           </div>
-          <h1 className="text-3xl font-black text-slate-900 tracking-tight">Xush kelibsiz</h1>
-          <p className="text-slate-500 font-medium">Admin panelga kirish uchun ma'lumotlarni kiriting</p>
+          <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Admin Panel</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-5">
-          <div className="space-y-2">
-            <label className="text-sm font-bold text-slate-700 ml-1">Email manzilingiz</label>
-            <Input 
-              type="email" 
-              placeholder="admin@example.com" 
-              onChange={(e) => setEmail(e.target.value)} 
-              required 
-              className="h-12 rounded-xl border-slate-200 focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-          
-          <div className="space-y-2">
-            <label className="text-sm font-bold text-slate-700 ml-1">Parol</label>
-            <Input 
-              type="password" 
-              placeholder="••••••••" 
-              onChange={(e) => setPassword(e.target.value)} 
-              required 
-              className="h-12 rounded-xl border-slate-200 focus:ring-2 focus:ring-blue-500"
-            />
+        {/* Card */}
+        <div className="bg-white rounded-3xl shadow-xl shadow-slate-200/80 border border-slate-100 p-8 space-y-6">
+          <div className="space-y-1">
+            <h1 className="text-2xl font-black text-slate-900 tracking-tight">Xush kelibsiz</h1>
+            <p className="text-sm text-slate-500">
+              Kirish uchun email va parolingizni kiriting
+            </p>
           </div>
 
-          <Button 
-            disabled={loading}
-            type="submit" 
-            className="w-full h-12 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold text-lg shadow-lg shadow-blue-100 transition-all"
-          >
-            {loading ? <Loader2 className="animate-spin mr-2" /> : "Tizimga kirish"}
-          </Button>
-        </form>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-1.5">
+              <label className="text-sm font-semibold text-slate-700">Email</label>
+              <Input
+                type="email"
+                placeholder="admin@medterm.uz"
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="h-11 rounded-xl border-slate-200 focus-visible:ring-blue-500"
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="text-sm font-semibold text-slate-700">Parol</label>
+              <Input
+                type="password"
+                placeholder="••••••••"
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                className="h-11 rounded-xl border-slate-200 focus-visible:ring-blue-500"
+              />
+            </div>
+
+            <Button
+              disabled={loading}
+              type="submit"
+              className="w-full h-11 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold shadow-md shadow-blue-200 transition-all"
+            >
+              {loading ? (
+                <Loader2 className="animate-spin mr-2 h-4 w-4" />
+              ) : null}
+              {loading ? "Kirilmoqda..." : "Tizimga kirish"}
+            </Button>
+          </form>
+        </div>
+
+        <p className="mt-6 text-center text-xs text-slate-400">
+          © {new Date().getFullYear()} MedTerm.uz • SamDCHTI
+        </p>
       </div>
     </div>
   );

@@ -1,13 +1,15 @@
 import Link from 'next/link';
-import { Menu, Stethoscope, Send, BookOpen, Info, BarChart3, Languages } from 'lucide-react'; 
+import { Menu, Send, BookOpen, Info, BarChart3, Languages } from 'lucide-react';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { getLanguages } from '@/lib/actions';
 import { NavLinks } from '@/components/NavLinks';
 import { Button } from './ui/button';
 import { ThemeToggle } from './ThemeToggle';
+import { Logo } from '@/components/Logo';
 import {
   Sheet,
   SheetContent,
+  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -28,19 +30,7 @@ export const Header = async ({ dict, lang }: { dict: any; lang: string }) => {
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         
         {/* LOGOTIP */}
-        <Link href={`/${lang}`} className="flex items-center gap-2 group shrink-0">
-          <div className="p-2 bg-blue-600 rounded-lg group-hover:bg-blue-700 transition-all shadow-lg shadow-blue-200 dark:shadow-none text-white">
-            <Stethoscope className="h-6 w-6" />
-          </div>
-          <div className="flex flex-col leading-tight">
-            <span className="font-black text-xl tracking-tighter text-blue-600 dark:text-blue-400">
-              {dict.siteAbbr}
-            </span>
-            <span className="hidden lg:block text-[9px] font-black uppercase tracking-[0.15em] text-muted-foreground">
-              {dict.siteName}
-            </span>
-          </div>
-        </Link>
+        <Logo lang={lang} size="md" />
         
         {/* DESKTOP NAVIGATSIYA */}
         <div className="hidden lg:flex items-center">
@@ -76,10 +66,12 @@ export const Header = async ({ dict, lang }: { dict: any; lang: string }) => {
               </SheetTrigger>
               <SheetContent side="right" className="w-75 sm:w-100">
                 <SheetHeader className="mb-8">
-                  <SheetTitle className="text-left flex items-center gap-2">
-                    <Stethoscope className="h-5 w-5 text-blue-600" />
-                    {dict.siteName}
+                  <SheetTitle className="text-left">
+                    <Logo lang={lang} size="sm" />
                   </SheetTitle>
+                  <SheetDescription className="sr-only">
+                    Sayt navigatsiya menyusi
+                  </SheetDescription>
                 </SheetHeader>
                 <nav className="flex flex-col gap-4">
                   {mobileLinks.map((link) => (

@@ -1,67 +1,72 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "@/components/theme-provider";
-import { env } from "process";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://medterm.uz";
 
-// SEO VA META MA'LUMOTLAR
 export const metadata: Metadata = {
   title: {
-    default: "Medical Dictionary | Tibbiy Lug'at",
-    template: "%s | Medical Dictionary"
+    default: "MedTerm.uz | Tibbiy Terminlar Lug'ati",
+    template: "%s | MedTerm.uz",
   },
-  description: "O'zbek, rus va ingliz tillaridagi mukammal tibbiy lug'at. Tibbiy terminlar ta'rifi va tushuntirishlari.",
-  keywords: ["medical dictionary", "tibbiy lug'at", "terminlar", "tibbiyot", "kasalliklar", "o'zbekcha tibbiy lug'at"],
-  
+  description:
+    "O'zbek, rus va ingliz tillaridagi mukammal tibbiy terminlar lug'ati. Tibbiy terminlar, qisqartmalar va ularning ta'riflari.",
+  keywords: [
+    "medterm",
+    "medterm.uz",
+    "tibbiy lug'at",
+    "tibbiy terminlar",
+    "medical dictionary",
+    "tibbiyot",
+    "qisqartmalar",
+    "o'zbekcha tibbiy lug'at",
+    "SamDCHTI",
+  ],
+  metadataBase: new URL(BASE_URL),
+
   openGraph: {
-    title: "Medical Dictionary | Tibbiy Lug'at",
-    description: "Tibbiy terminlarning ko'p tillik bazasi",
+    title: "MedTerm.uz | Tibbiy Terminlar Lug'ati",
+    description:
+      "O'zbek, rus va ingliz tillaridagi professional tibbiy terminlar bazasi",
     type: "website",
     locale: "uz_UZ",
-    url: env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000", 
-    siteName: "Medical Dictionary",
+    url: BASE_URL,
+    siteName: "MedTerm.uz",
+    images: [{ url: "/og", width: 1200, height: 630, alt: "MedTerm.uz" }],
   },
 
   twitter: {
     card: "summary_large_image",
-    title: "Medical Dictionary | Tibbiy Lug'at",
-    description: "Tibbiy terminlar bo'yicha mukammal qo'llanma",
+    title: "MedTerm.uz | Tibbiy Terminlar Lug'ati",
+    description: "Tibbiy terminlar va qisqartmalar bo'yicha professional lug'at",
+    images: ["/og"],
   },
 
   icons: {
-    icon: "/favicon.ico",
-    shortcut: "/shortcut-icon.png",
-    apple: "/apple-touch-icon.png",
+    icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
+    apple: "/logo-icon.svg",
   },
+
+  authors: [
+    {
+      name: "Шахноза Абдухафизовна",
+      url: "https://t.me/yusupova_shakhnoza",
+    },
+  ],
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="uz" suppressHydrationWarning>
+    <html suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} antialiased`}
+        suppressHydrationWarning
       >
-        <ThemeProvider 
-          attribute="class" 
-          defaultTheme="light"
-          enableSystem
-        >
-          {children}
-        </ThemeProvider>
+        {children}
       </body>
     </html>
   );

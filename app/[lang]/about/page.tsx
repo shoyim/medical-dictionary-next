@@ -1,13 +1,45 @@
+import type { Metadata } from "next";
 import { getDictionary } from "@/lib/get-dictionary";
 import { User, GraduationCap, Building2, BookOpen, Send, Award, FileDown, FileText } from "lucide-react";
 import Link from "next/link";
+import { JsonLd } from "@/components/JsonLd";
+import { buildMetadata } from "@/lib/seo";
+
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://medterm.uz";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}): Promise<Metadata> {
+  const { lang } = await params;
+  return buildMetadata("about", lang, "/about");
+}
 
 export default async function AboutPage({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params;
   const dict = await getDictionary(lang);
   const t = dict.about;
 
+  const orgSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "MedTerm.uz",
+    url: BASE_URL,
+    sameAs: ["https://t.me/yusupova_shakhnoza"],
+    founder: {
+      "@type": "Person",
+      name: "Shakhnoza Abdukhafizona",
+    },
+    parentOrganization: {
+      "@type": "EducationalOrganization",
+      name: t.institute,
+    },
+  };
+
   return (
+    <>
+    <JsonLd data={orgSchema} />
     <div className="min-h-screen bg-slate-50/50 dark:bg-slate-950 py-16 transition-colors duration-300">
       <div className="max-w-5xl mx-auto px-4 space-y-12">
         
@@ -147,5 +179,6 @@ export default async function AboutPage({ params }: { params: Promise<{ lang: st
         </section>
       </div>
     </div>
+    </>
   );
 }

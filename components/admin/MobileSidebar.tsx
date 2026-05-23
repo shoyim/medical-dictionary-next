@@ -1,7 +1,7 @@
 "use client";
 
 import { Menu } from "lucide-react";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetTrigger } from "@/components/ui/sheet";
 import { Sidebar } from "./Sidebar";
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
@@ -23,7 +23,10 @@ export function MobileSidebar() {
         </button>
       </SheetTrigger>
       <SheetContent side="left" className="p-0 w-72">
-        {/* Sidebar-ni bu yerda qayta ishlatamiz, lekin 'hidden md:flex'siz */}
+        <SheetHeader className="sr-only">
+          <SheetTitle>Admin menyu</SheetTitle>
+          <SheetDescription>Admin navigatsiya paneli</SheetDescription>
+        </SheetHeader>
         <div className="h-full flex flex-col bg-white">
            <Sidebar isMobile />
         </div>
