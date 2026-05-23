@@ -2,6 +2,7 @@
 
 import { Trash2, Loader2 } from "lucide-react";
 import { useTransition } from "react";
+import { toast } from "sonner";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -25,7 +26,12 @@ export function DeleteButton({ id, onDelete }: DeleteButtonProps) {
 
   const handleConfirm = () => {
     startTransition(async () => {
-      await onDelete(id);
+      try {
+        await onDelete(id);
+        toast.success("O'chirildi", { description: "Ma'lumot muvaffaqiyatli o'chirildi." });
+      } catch {
+        toast.error("Xatolik", { description: "O'chirishda xatolik yuz berdi." });
+      }
     });
   };
 

@@ -57,12 +57,22 @@ export async function getTerms(query: string, letter: string, langCode: string, 
         where: whereCondition,
         orderBy: { name: 'asc' },
         skip: skip,
-        take: pageSize
+        take: pageSize,
+        include: {
+          term: {
+            include: {
+              translations: {
+                where: { language_id: { not: language.id } },
+                include: { language: { select: { code: true, flag: true } } }
+              }
+            }
+          }
+        }
       })
     ]);
 
     return {
-      terms: JSON.parse(JSON.stringify(terms)), 
+      terms: JSON.parse(JSON.stringify(terms)),
       totalPages: Math.ceil(totalCount / pageSize),
       totalCount
     };
@@ -72,50 +82,31 @@ export async function getTerms(query: string, letter: string, langCode: string, 
   }
 }
 
-export async function getAbbreviations(query: string, page: number = 1) {
-  const pageSize = 6;
+export async function getAbbreviations(query: string, page: number = 1, letter: string = "") {
+  const pageSize = 12;
   const skip = (page - 1) * pageSize;
 
   try {
-    // Prisma modelini aniqlash
-    const abbrModel = 
-      (prisma as any).abbreviation || 
-      (prisma as any).abbreviations || 
-      (prisma as any).Abbreviation;
-
-    if (!abbrModel) {
-      throw new Error("Prisma client ichida 'abbreviation' modeli topilmadi.");
-    }
-
-    // mode: 'insensitive' olib tashlandi, chunki bazangiz buni qo'llab-quvvatlamaydi
-    const whereCondition = query ? {
-      OR: [
-        { title: { contains: query } },
-        { description: { contains: query } }
-      ]
-    } : {};
+    const whereCondition = query
+      ? { OR: [{ title: { contains: query } }, { description: { contains: query } }] }
+      : letter
+      ? { title: { startsWith: letter } }
+      : {};
 
     const [totalCount, items] = await Promise.all([
-      abbrModel.count({ where: whereCondition }),
-      abbrModel.findMany({
+      prisma.abbreviations.count({ where: whereCondition }),
+      prisma.abbreviations.findMany({
         where: whereCondition,
-        orderBy: { title: 'asc' },
-        skip: skip,
-        take: pageSize
-      })
+        orderBy: { title: "asc" },
+        skip,
+        take: pageSize,
+      }),
     ]);
 
-    // BigInt xatosini oldini olish uchun JSON replacer
-    const safeItems = JSON.parse(
-      JSON.stringify(items, (key, value) =>
-        typeof value === "bigint" ? value.toString() : value
-      )
-    );
-
     return {
-      items: safeItems,
+      items: JSON.parse(JSON.stringify(items)),
       totalPages: Math.ceil(Number(totalCount) / pageSize),
-      totalCount: Number(totalCount)
+      totalCount: Number(totalCount),
     };
   } catch (error) {
     console.error("Database error details:", error);
@@ -125,35 +116,29 @@ export async function getAbbreviations(query: string, page: number = 1) {
 
 export async function getGlobalStats() {
   try {
-    // Prisma client ichidagi mavjud modellarni dinamik tekshirish
-    const models = Object.keys(prisma);
-    
-    // Terminlar soni
-    const termsModel = (prisma as any).medical_terms || (prisma as any).medical_term || (prisma as any).MedicalTerm;
-    const termsCount = termsModel ? await termsModel.count() : 0;
-
-    // Qisqartmalar soni
-    const abbrModel = (prisma as any).abbreviations || (prisma as any).abbreviation || (prisma as any).Abbreviation;
-    const abbrCount = abbrModel ? await abbrModel.count() : 0;
-
-    // Tillar soni
-    const langModel = (prisma as any).languages || (prisma as any).language || (prisma as any).Language;
-    const langCount = langModel ? await langModel.count() : 3; // Bazada bo'lmasa default 3 (uz, ru, en)
-
-    // Agar ma'lumot kelsa-yu lekin BigInt bo'lsa Number'ga o'tkazamiz
-    const tCount = Number(termsCount);
-    const aCount = Number(abbrCount);
-    const lCount = Number(langCount);
+    const [termsCount, abbrCount, langCount, langBreakdown] = await Promise.all([
+      prisma.medicalTerm.count(),
+      prisma.abbreviations.count(),
+      prisma.language.count(),
+      prisma.language.findMany({
+        include: { _count: { select: { translations: true } } }
+      }),
+    ]);
 
     return {
-      termsCount: tCount,
-      abbrCount: aCount,
-      langCount: lCount,
-      wordsCount: tCount * 15, // O'rtacha hisobda
+      termsCount: Number(termsCount),
+      abbrCount: Number(abbrCount),
+      langCount: Number(langCount),
+      langBreakdown: langBreakdown.map(l => ({
+        code: l.code,
+        name: l.name,
+        flag: l.flag,
+        count: l._count.translations,
+      })),
     };
   } catch (error) {
     console.error("Statistika olishda xatolik:", error);
-    return { termsCount: 0, abbrCount: 0, langCount: 0, wordsCount: 0 };
+    return { termsCount: 0, abbrCount: 0, langCount: 0, langBreakdown: [] };
   }
 }
 

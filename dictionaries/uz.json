@@ -39,9 +39,14 @@
     "stats" : {
         "title": "Lug'at Statistikasi",
         "subtitle": "Tizimdagi barcha terminlar, qisqartmalar va tillar bo'yicha umumiy statistika.",
-        "last_update": "So'nggi yangilanish",
+        "last_update": "Oxirgi yangilanish",
         "total_terms": "Jami terminlar",
+        "total_translations": "Jami tarjimalar",
+        "abbreviations": "Qisqartmalar",
+        "languages": "Tillar",
         "total_languages": "Jami tillar",
+        "by_language": "Tillarga ko'ra taqsimot",
+        "sample_term": "Namuna: bir termin — uch tilda",
         "most_popular_language": "Eng mashhur til",
         "recently_added_terms": "Yaqinda qo'shilgan terminlar"
     },
@@ -65,7 +70,8 @@
         "editorial_info": "Tibbiyot oliy o'quv yurtlari talabalari uchun o'quv qo'llanma «SamDCHTI» rektori, filologiya fanlari doktori, professor <strong>B.A. Xoliqov</strong> tahriri ostida tayyorlangan.",
         "resources_title": "Yuklab olish uchun resurslar",
         "book1_title": "Patologik anatomiya",
-        "book2_title": "Ruscha-inglizcha lug'at"
+        "book2_title": "Ruscha-inglizcha lug'at",
+        "download_pdf": "PDF formatida yuklab olish"
     },
 
     "footer": {

@@ -36,6 +36,16 @@ export default async function AbbrPage({
     <>
       <JsonLd data={schema} />
       <div className="min-h-screen bg-slate-50/30 dark:bg-slate-950 transition-colors duration-300">
+        <div className="max-w-5xl mx-auto px-4 pt-8 pb-2 text-center">
+          <h1 className="text-3xl font-black tracking-tight text-slate-900 dark:text-white">
+            {dict.abbreviation?.title || "Tibbiy Qisqartmalar Lug'ati"}
+          </h1>
+          {dict.abbreviation?.desc && (
+            <p className="text-sm text-slate-500 dark:text-slate-400 mt-1 max-w-lg mx-auto">
+              {dict.abbreviation.desc}
+            </p>
+          )}
+        </div>
         <AbbreviationList dict={dict} initialLang={lang} />
       </div>
     </>

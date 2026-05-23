@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -20,19 +20,17 @@ model User {
   @@map("users")
 }
 
-
 model MedicalTermTranslation {
-  id              Int          @id @default(autoincrement())
+  id              Int         @id @default(autoincrement())
   medical_term_id Int
   language_id     Int
-  name            String       @db.VarChar(255)
-  description     String       @db.Text
-  created_at      DateTime     @default(now())
-  updated_at      DateTime     @updatedAt
+  name            String      @db.VarChar(255)
+  description     String      @db.Text
+  created_at      DateTime    @default(now())
+  updated_at      DateTime    @updatedAt
 
-  // Faqat bittadan qoldirildi:
-  language        Language     @relation(fields: [language_id], references: [id])
-  term            MedicalTerm  @relation(fields: [medical_term_id], references: [id])
+  language        Language    @relation(fields: [language_id], references: [id])
+  term            MedicalTerm @relation(fields: [medical_term_id], references: [id])
 
   @@map("medical_term_translations")
 }
@@ -41,13 +39,13 @@ model Language {
   id         Int      @id @default(autoincrement())
   code       String   @unique
   name       String
-  flag       String   // Rasm URL manzili uchun
+  flag       String
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
-  translations MedicalTermTranslation[] 
+  translations MedicalTermTranslation[]
 
-  @@map("languages") // Bazadagi jadval nomi 'languages' ekanligini bildiradi
+  @@map("languages")
 }
 
 model MedicalTerm {
@@ -60,14 +58,11 @@ model MedicalTerm {
 }
 
 model Abbreviations {
-  id              Int         @id @default(autoincrement())
-  title           String
-  description     String      @db.Text
-  created_at      DateTime    @default(now())
-  updated_at      DateTime    @updatedAt
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String   @db.Text
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
 
   @@map("abbreviations")
 }
-
-
-

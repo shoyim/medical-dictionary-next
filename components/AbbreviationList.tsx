@@ -1,124 +1,234 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { getAbbreviations } from "@/lib/actions";
 import { Input } from "@/components/ui/input";
-import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Search, ChevronLeft, ChevronRight, Clock } from "lucide-react";
+import { Search, ChevronLeft, ChevronRight, X, Hash } from "lucide-react";
 
-export function AbbreviationList({ dict, initialLang }: { dict: any, initialLang: string }) {
+const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+
+function parseTitle(title: string) {
+  const paren = title.indexOf("(");
+  if (paren > 0) {
+    return {
+      abbr: title.slice(0, paren).trim(),
+      expansion: title.slice(paren).trim(),
+    };
+  }
+  return { abbr: title, expansion: "" };
+}
+
+interface AbbrItem {
+  id: number;
+  title: string;
+  description: string;
+  updated_at?: string;
+}
+
+export function AbbreviationList({ dict, initialLang }: { dict: any; initialLang: string }) {
   const [query, setQuery] = useState("");
+  const [selectedLetter, setSelectedLetter] = useState("A");
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
-  const [data, setData] = useState({ items: [], totalPages: 0, totalCount: 0 });
+  const [data, setData] = useState<{ items: AbbrItem[]; totalPages: number; totalCount: number }>({
+    items: [],
+    totalPages: 0,
+    totalCount: 0,
+  });
+  const topRef = useRef<HTMLDivElement>(null);
+  const alphabetRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const fetchData = async () => {
+    setPage(1);
+  }, [query, selectedLetter]);
+
+  useEffect(() => {
+    const t = setTimeout(async () => {
       setLoading(true);
       try {
-        const res = await getAbbreviations(query, page);
-        setData(res);
-      } catch (error) {
-        console.error("Fetch error:", error);
+        const res = await getAbbreviations(query, page, query ? "" : selectedLetter);
+        setData(res as any);
       } finally {
         setLoading(false);
       }
-    };
+    }, 300);
+    return () => clearTimeout(t);
+  }, [query, selectedLetter, page]);
 
-    const timer = setTimeout(fetchData, 400);
-    return () => clearTimeout(timer);
-  }, [query, page]);
+  const goPage = useCallback((p: number) => {
+    setPage(p);
+    topRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, []);
+
+  const handleLetterClick = (letter: string) => {
+    setSelectedLetter(letter);
+    setQuery("");
+    const el = alphabetRef.current?.querySelector(`[data-letter="${letter}"]`) as HTMLElement;
+    el?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+  };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-10 space-y-8 transition-colors duration-300">
-      
-      {/* SARLAVHA VA QIDIRUV */}
-      <div className="text-center space-y-6">
-        <h1 className="text-3xl md:text-4xl font-black uppercase tracking-tighter text-slate-900 dark:text-white">
-          {dict?.abbreviation?.title || "Qisqartmalar lug'ati"}
-        </h1>
-        <div className="relative max-w-md mx-auto group">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 w-5 h-5 group-focus-within:text-blue-500 transition-colors" />
-          <Input 
-            placeholder={dict?.abbreviation?.desc || "Qisqartmani yozing..."}
-            className="h-12 pl-12 rounded-2xl shadow-sm border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 dark:text-slate-200 dark:placeholder:text-slate-600 focus:ring-2 focus:ring-blue-500/20 transition-all"
+    <div className="max-w-5xl mx-auto px-4 py-8 space-y-6" ref={topRef}>
+
+      {/* ── SEARCH ── */}
+      <div className="sticky top-0 z-20 bg-white/95 dark:bg-slate-950/95 backdrop-blur-md rounded-2xl shadow-lg border border-slate-200 dark:border-slate-800 p-3">
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+          <Input
+            placeholder={dict?.common?.search_placeholder || "Qisqartma yoki kalit so'z kiriting..."}
+            className="h-11 pl-10 pr-10 rounded-xl border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900"
             value={query}
-            onChange={(e) => { setQuery(e.target.value); setPage(1); }}
+            onChange={(e) => setQuery(e.target.value)}
           />
+          {query && (
+            <button
+              onClick={() => setQuery("")}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          )}
         </div>
       </div>
 
-      {/* RO'YXAT: Qatoriga 2 tadan */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {/* ── ALPHABET ── */}
+      {!query && (
+        <div
+          ref={alphabetRef}
+          className="flex gap-1 overflow-x-auto pb-1 select-none px-1"
+          style={{ scrollbarWidth: "none" }}
+        >
+          {ALPHABET.map((char) => (
+            <button
+              key={char}
+              data-letter={char}
+              onClick={() => handleLetterClick(char)}
+              className={`flex-shrink-0 w-9 h-9 rounded-lg text-sm font-bold transition-all ${
+                selectedLetter === char
+                  ? "bg-blue-600 text-white shadow-md scale-110"
+                  : "text-slate-500 dark:text-slate-400 hover:bg-blue-50 dark:hover:bg-slate-800"
+              }`}
+            >
+              {char}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {/* ── RESULTS COUNT ── */}
+      {!loading && (
+        <div className="flex items-center justify-between text-sm text-slate-500 dark:text-slate-400 px-1">
+          <span>
+            {query
+              ? `"${query}" — ${data.totalCount} ta natija`
+              : `${selectedLetter} — ${data.totalCount} ta qisqartma`}
+          </span>
+          {data.totalPages > 1 && (
+            <span>{page} / {data.totalPages} sahifa</span>
+          )}
+        </div>
+      )}
+
+      {/* ── GRID ── */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {loading ? (
-          Array(4).fill(0).map((_, i) => (
-            <div key={i} className="h-48 w-full bg-slate-100 dark:bg-slate-900/50 animate-pulse rounded-[2.5rem]" />
+          Array(6).fill(0).map((_, i) => (
+            <div key={i} className="h-28 bg-slate-100 dark:bg-slate-800 animate-pulse rounded-2xl" />
           ))
         ) : data.items.length > 0 ? (
-          data.items.map((item: any) => (
-            <Card 
-              key={item.id} 
-              className="relative p-8 rounded-[2.5rem] border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-xl dark:hover:shadow-blue-900/10 hover:-translate-y-1 transition-all duration-300 bg-white dark:bg-slate-900 flex flex-col justify-between overflow-hidden group"
-            >
-              {/* ID TEPADA */}
-              <div className="absolute top-6 right-8">
-                <span className="text-[10px] font-bold text-slate-300 dark:text-slate-700 uppercase tracking-widest">
-                  #{item.id}
-                </span>
-              </div>
-
-              <div className="space-y-4">
-                {/* NOMI */}
-                <h2 className="text-2xl font-black text-blue-600 dark:text-blue-400 uppercase pr-10 leading-tight">
-                  {item.title}
-                </h2>
-
-                {/* TAVSIFI */}
-                <div 
-                  className="text-slate-600 dark:text-slate-400 text-base leading-relaxed line-clamp-4 font-medium"
-                  dangerouslySetInnerHTML={{ __html: item.description }} 
-                />
-              </div>
-
-              {/* PASTI: VAQT */}
-              <div className="flex items-center gap-2 pt-6 mt-6 border-t border-slate-50 dark:border-slate-800/50 text-[10px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-wider">
-                <Clock className="w-3.5 h-3.5" />
-                <span>{item.updated_at?.split('T')[0]}</span>
-              </div>
-            </Card>
-          ))
+          data.items.map((item) => {
+            const { abbr, expansion } = parseTitle(item.title);
+            return (
+              <article
+                key={item.id}
+                className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 p-4 shadow-sm hover:shadow-md hover:border-blue-100 dark:hover:border-slate-700 transition-all duration-200"
+              >
+                <div className="flex items-start gap-3">
+                  <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-950/50 flex items-center justify-center">
+                    <Hash className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="font-black text-blue-600 dark:text-blue-400 text-base leading-tight">
+                      {abbr}
+                    </p>
+                    {expansion && (
+                      <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 leading-snug">
+                        {expansion}
+                      </p>
+                    )}
+                    {item.description && (
+                      <p className="text-sm text-slate-700 dark:text-slate-300 mt-1.5 font-medium leading-snug">
+                        {item.description}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </article>
+            );
+          })
         ) : (
-          <div className="col-span-full text-center py-24 bg-slate-50 dark:bg-slate-900/50 rounded-[3rem] border-2 border-dashed border-slate-200 dark:border-slate-800 text-slate-400 dark:text-slate-600">
-            <Search className="w-12 h-12 mx-auto mb-4 opacity-20" />
-            <p className="text-lg font-medium">{dict?.common?.no_results || "Hech narsa topilmadi"}</p>
+          <div className="col-span-full py-20 text-center rounded-2xl border-2 border-dashed border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50">
+            <Hash className="w-10 h-10 mx-auto text-slate-300 dark:text-slate-700 mb-3" />
+            <p className="text-slate-400 dark:text-slate-600 text-sm font-medium">
+              {dict?.pagination?.noResults || "Natija topilmadi"}
+            </p>
           </div>
         )}
       </div>
 
-      {/* PAGINATION */}
+      {/* ── PAGINATION ── */}
       {data.totalPages > 1 && (
-        <div className="flex justify-center items-center gap-4 pt-10">
-          <Button 
-            variant="outline" 
-            className="rounded-xl h-11 px-6 border-slate-200 dark:border-slate-800 dark:text-slate-300 dark:hover:bg-slate-800 transition-all active:scale-95"
-            disabled={page === 1} 
-            onClick={() => setPage(p => p - 1)}
+        <div className="flex items-center justify-center gap-2 pt-4 pb-10">
+          <Button
+            variant="outline"
+            size="icon"
+            disabled={page === 1}
+            onClick={() => goPage(page - 1)}
+            className="h-9 w-9 rounded-xl"
           >
-            <ChevronLeft className="w-4 h-4 mr-2" /> {dict?.pagination?.previous || "Back"}
+            <ChevronLeft className="w-4 h-4" />
           </Button>
-          
-          <div className="font-bold text-sm text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-5 py-2.5 rounded-full min-w-[100px] text-center">
-            {page} <span className="mx-1 text-slate-300 dark:text-slate-600">/</span> {data.totalPages}
+
+          <div className="flex gap-1">
+            {Array.from({ length: data.totalPages }, (_, i) => i + 1)
+              .filter((p) => p === 1 || p === data.totalPages || Math.abs(p - page) <= 1)
+              .reduce<(number | "…")[]>((acc, p, idx, arr) => {
+                if (idx > 0 && p - (arr[idx - 1] as number) > 1) acc.push("…");
+                acc.push(p);
+                return acc;
+              }, [])
+              .map((p, i) =>
+                p === "…" ? (
+                  <span key={`e${i}`} className="w-9 h-9 flex items-center justify-center text-slate-400 text-sm">
+                    …
+                  </span>
+                ) : (
+                  <Button
+                    key={p}
+                    variant={page === p ? "default" : "ghost"}
+                    size="icon"
+                    onClick={() => goPage(p as number)}
+                    className={`h-9 w-9 rounded-xl font-bold text-sm ${
+                      page === p
+                        ? "bg-blue-600 text-white hover:bg-blue-700"
+                        : "text-slate-600 dark:text-slate-400"
+                    }`}
+                  >
+                    {p}
+                  </Button>
+                )
+              )}
           </div>
 
-          <Button 
-            variant="outline" 
-            className="rounded-xl h-11 px-6 border-slate-200 dark:border-slate-800 dark:text-slate-300 dark:hover:bg-slate-800 transition-all active:scale-95"
-            disabled={page === data.totalPages} 
-            onClick={() => setPage(p => p + 1)}
+          <Button
+            variant="outline"
+            size="icon"
+            disabled={page === data.totalPages}
+            onClick={() => goPage(page + 1)}
+            className="h-9 w-9 rounded-xl"
           >
-            {dict?.pagination?.next || "Next"} <ChevronRight className="w-4 h-4 ml-2" />
+            <ChevronRight className="w-4 h-4" />
           </Button>
         </div>
       )}

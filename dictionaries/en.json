@@ -41,7 +41,12 @@
         "subtitle": "General statistics for all terms, abbreviations, and languages in the system.",
         "last_update": "Last update",
         "total_terms": "Total terms",
+        "total_translations": "Total translations",
+        "abbreviations": "Abbreviations",
+        "languages": "Languages",
         "total_languages": "Total languages",
+        "by_language": "Breakdown by language",
+        "sample_term": "Example: one term — three languages",
         "most_popular_language": "Most popular language",
         "recently_added_terms": "Recently added terms"
     },

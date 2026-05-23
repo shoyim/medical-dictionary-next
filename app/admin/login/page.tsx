@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Loader2 } from "lucide-react";
@@ -22,10 +23,11 @@ export default function AdminLogin() {
       redirect: false,
     });
     if (res?.ok) {
+      toast.success("Muvaffaqiyatli kirildi!", { description: "Admin panelga yo'naltirilmoqda..." });
       router.push("/admin/dashboard");
       router.refresh();
     } else {
-      alert("Email yoki parol xato!");
+      toast.error("Kirish xatosi", { description: "Email yoki parol noto'g'ri. Qayta urinib ko'ring." });
       setLoading(false);
     }
   };

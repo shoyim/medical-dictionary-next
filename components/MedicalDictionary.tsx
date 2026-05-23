@@ -1,212 +1,318 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { getTerms } from "@/lib/actions";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Search, Globe2, ChevronLeft, ChevronRight } from "lucide-react";
+import { Search, Globe2, ChevronLeft, ChevronRight, X, BookOpen } from "lucide-react";
 
-const alphabets: { [key: string]: string[] } = {
+const alphabets: Record<string, string[]> = {
   uz: "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split(""),
   ru: "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ".split(""),
   en: "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split(""),
 };
 
-export function MedicalDictionary({ initialLang, dbLanguages, dict }: { initialLang: string, dbLanguages: any[], dict: any}) {
+const langColors: Record<string, string> = {
+  uz: "bg-green-50 text-green-700 border-green-200 dark:bg-green-950/50 dark:text-green-400 dark:border-green-800",
+  ru: "bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950/50 dark:text-blue-400 dark:border-blue-800",
+  en: "bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-950/50 dark:text-purple-400 dark:border-purple-800",
+};
+
+interface Translation {
+  id: number;
+  name: string;
+  description: string;
+  language: { code: string; flag: string };
+}
+
+interface Term {
+  id: number;
+  medical_term_id: number;
+  name: string;
+  description: string;
+  term: { translations: Translation[] };
+}
+
+export function MedicalDictionary({
+  initialLang,
+  dbLanguages,
+  dict,
+}: {
+  initialLang: string;
+  dbLanguages: { id: number; code: string; name: string; flag: string }[];
+  dict: any;
+}) {
   const [lang, setLang] = useState(initialLang);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedLetter, setSelectedLetter] = useState("A");
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [expanded, setExpanded] = useState<Set<number>>(new Set());
+  const topRef = useRef<HTMLDivElement>(null);
+  const alphabetRef = useRef<HTMLDivElement>(null);
 
-  const [data, setData] = useState<{terms: any[], totalPages: number, totalCount: number}>({
-    terms: [], totalPages: 0, totalCount: 0
+  const [data, setData] = useState<{ terms: Term[]; totalPages: number; totalCount: number }>({
+    terms: [],
+    totalPages: 0,
+    totalCount: 0,
   });
 
   useEffect(() => {
     setCurrentPage(1);
+    setExpanded(new Set());
   }, [lang, searchQuery, selectedLetter]);
 
   useEffect(() => {
-    const fetchWithDebounce = setTimeout(async () => {
+    const t = setTimeout(async () => {
       setLoading(true);
       try {
-        const result = await getTerms(searchQuery, searchQuery ? "" : selectedLetter, lang, currentPage);
+        const result = await getTerms(
+          searchQuery,
+          searchQuery ? "" : selectedLetter,
+          lang,
+          currentPage
+        );
         setData({
-          terms: result.terms || [],
+          terms: (result.terms as Term[]) || [],
           totalPages: result.totalPages || 0,
-          totalCount: result.totalCount || 0
+          totalCount: result.totalCount || 0,
         });
-      } catch (error) {
-        console.error("Xatolik:", error);
       } finally {
         setLoading(false);
       }
     }, 300);
-
-    return () => clearTimeout(fetchWithDebounce);
+    return () => clearTimeout(t);
   }, [searchQuery, selectedLetter, lang, currentPage]);
 
+  const goPage = useCallback(
+    (p: number) => {
+      setCurrentPage(p);
+      setExpanded(new Set());
+      topRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    },
+    []
+  );
+
+  const toggleExpand = (id: number) => {
+    setExpanded((prev) => {
+      const next = new Set(prev);
+      next.has(id) ? next.delete(id) : next.add(id);
+      return next;
+    });
+  };
+
+  const activeLetter = (letter: string) => {
+    const el = alphabetRef.current?.querySelector(`[data-letter="${letter}"]`) as HTMLElement;
+    el?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+  };
+
+  const handleLetterClick = (letter: string) => {
+    setSelectedLetter(letter);
+    setSearchQuery("");
+    activeLetter(letter);
+  };
+
   return (
-    <div className="max-w-7xl mx-auto px-4 py-10 space-y-8 transition-colors duration-300">
-      
-      {/* 1. CONTROL PANEL */}
-      <div className="bg-white dark:bg-slate-900 p-6 rounded-[2.5rem] shadow-xl shadow-blue-900/5 dark:shadow-none border border-slate-100 dark:border-slate-800 flex flex-col md:flex-row gap-4 items-center">
-        <div className="w-full md:w-48">
-          <Select value={lang} onValueChange={setLang}>
-            <SelectTrigger className="h-12 rounded-2xl border-slate-200 dark:border-slate-700 bg-transparent dark:text-slate-200">
-              <Globe2 className="w-4 h-4 mr-2 text-blue-600 dark:text-blue-400" />
-              <SelectValue placeholder="Til" />
+    <div className="max-w-5xl mx-auto px-4 py-8 space-y-6" ref={topRef}>
+
+      {/* ── SEARCH + LANGUAGE ── */}
+      <div className="sticky top-0 z-20 bg-white/95 dark:bg-slate-950/95 backdrop-blur-md rounded-2xl shadow-lg border border-slate-200 dark:border-slate-800 p-3 flex flex-col sm:flex-row gap-3">
+        <div className="flex-shrink-0">
+          <Select value={lang} onValueChange={(v) => { setLang(v); setSelectedLetter("A"); }}>
+            <SelectTrigger className="h-11 w-full sm:w-44 rounded-xl border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 gap-2">
+              <Globe2 className="w-4 h-4 text-blue-600" />
+              <SelectValue />
             </SelectTrigger>
-            <SelectContent className="dark:bg-slate-900 dark:border-slate-800">
+            <SelectContent>
               {dbLanguages.map((l) => (
-                <SelectItem key={l.id} value={l.code}>{l.name}</SelectItem>
+                <SelectItem key={l.id} value={l.code}>
+                  {l.flag} {l.name}
+                </SelectItem>
               ))}
             </SelectContent>
           </Select>
         </div>
 
-        <div className="relative w-full">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 dark:text-slate-500" />
-          <Input 
-            placeholder={dict.common.search_placeholder} 
-            className="h-12 pl-12 rounded-2xl border-slate-200 dark:border-slate-700 focus:ring-blue-500 text-lg shadow-inner bg-slate-50/50 dark:bg-slate-950 dark:text-slate-200"
+        <div className="relative flex-1">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+          <Input
+            placeholder={dict.common?.search_placeholder || "Qidirish..."}
+            className="h-11 pl-10 pr-10 rounded-xl border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900"
             value={searchQuery}
-            onChange={(e) => {
-              setSearchQuery(e.target.value);
-              if (e.target.value) setSelectedLetter("");
-            }}
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
+          {searchQuery && (
+            <button
+              onClick={() => setSearchQuery("")}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          )}
         </div>
       </div>
 
-      {/* 2. ALIFBO FILTRI */}
-      <div className="flex flex-wrap justify-center gap-1.5 py-4 bg-slate-50/50 dark:bg-slate-900/50 rounded-[2rem] p-4 border border-dashed border-slate-200 dark:border-slate-800">
-        {alphabets[lang]?.map((char) => (
-          <Button
-            key={char}
-            variant={selectedLetter === char ? "default" : "ghost"}
-            onClick={() => {
-              setSelectedLetter(char);
-              setSearchQuery("");
-            }}
-            className={`w-9 h-9 sm:w-10 sm:h-10 rounded-xl font-bold transition-all ${
-              selectedLetter === char 
-                ? "bg-blue-600 dark:bg-blue-500 text-white shadow-lg scale-110" 
-                : "text-slate-500 dark:text-slate-400 hover:bg-blue-100 dark:hover:bg-slate-800"
-            }`}
-          >
-            {char}
-          </Button>
-        ))}
-      </div>
+      {/* ── ALPHABET ── */}
+      {!searchQuery && (
+        <div
+          ref={alphabetRef}
+          className="flex gap-1 overflow-x-auto pb-1 scrollbar-hide select-none px-1"
+          style={{ scrollbarWidth: "none" }}
+        >
+          {(alphabets[lang] || alphabets.en).map((char) => (
+            <button
+              key={char}
+              data-letter={char}
+              onClick={() => handleLetterClick(char)}
+              className={`flex-shrink-0 w-9 h-9 rounded-lg text-sm font-bold transition-all ${
+                selectedLetter === char
+                  ? "bg-blue-600 text-white shadow-md scale-110"
+                  : "text-slate-500 dark:text-slate-400 hover:bg-blue-50 dark:hover:bg-slate-800"
+              }`}
+            >
+              {char}
+            </button>
+          ))}
+        </div>
+      )}
 
-      {/* NATIJALAR QISMI */}
-      <div className="max-w-4xl mx-auto w-full space-y-6">
+      {/* ── RESULTS COUNT ── */}
+      {!loading && (
+        <div className="flex items-center justify-between text-sm text-slate-500 dark:text-slate-400 px-1">
+          <span>
+            {searchQuery
+              ? `"${searchQuery}" — ${data.totalCount} ta natija`
+              : `${selectedLetter} — ${data.totalCount} ta termin`}
+          </span>
+          {data.totalPages > 1 && (
+            <span>{currentPage} / {data.totalPages} sahifa</span>
+          )}
+        </div>
+      )}
+
+      {/* ── TERMS LIST ── */}
+      <div className="space-y-3">
         {loading ? (
-          Array(3).fill(0).map((_, i) => (
-            <div key={i} className="h-44 w-full bg-slate-100 dark:bg-slate-800 animate-pulse rounded-[2rem]" />
+          Array(4).fill(0).map((_, i) => (
+            <div key={i} className="h-32 bg-slate-100 dark:bg-slate-800 animate-pulse rounded-2xl" />
           ))
         ) : data.terms.length > 0 ? (
-          <div className="flex flex-col gap-6">
-            {data.terms.map((term) => (
-              <Card 
-                key={term.id} 
-                className="relative overflow-hidden rounded-[2rem] border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-xl dark:hover:shadow-blue-900/10 transition-all duration-300 bg-white dark:bg-slate-900 p-8"
-              >
-                {/* TERM ID */}
-                <div className="absolute top-6 right-8">
-                  <span className="bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest">
-                    ID: {term.medical_term_id}
-                  </span>
-                </div>
+          data.terms.map((term) => {
+            const isLong = term.description.length > 280;
+            const isExpanded = expanded.has(term.id);
+            const otherTranslations = term.term?.translations || [];
 
-                <div className="flex flex-col space-y-4">
-                  <div className="flex items-center gap-3">
-                    <div className="w-1.5 h-8 bg-blue-600 dark:bg-blue-500 rounded-full" />
-                    <h3 className="text-2xl font-black text-slate-900 dark:text-slate-100 tracking-tight">
+            return (
+              <article
+                key={term.id}
+                className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-blue-100 dark:hover:border-slate-700 transition-all duration-200 overflow-hidden"
+              >
+                {/* Term name */}
+                <div className="px-5 pt-5 pb-3">
+                  <div className="flex items-start gap-3">
+                    <div className="mt-1 w-1 h-6 rounded-full bg-blue-600 flex-shrink-0" />
+                    <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 leading-snug">
                       {term.name}
                     </h3>
                   </div>
 
-                  <div className="prose prose-blue dark:prose-invert max-w-none">
-                    <div 
-                      className="text-slate-600 dark:text-slate-400 text-lg leading-relaxed pl-4 border-l-2 border-slate-50 dark:border-slate-800"
-                      dangerouslySetInnerHTML={{ __html: term.description }} 
-                    />
+                  {/* Description */}
+                  <div className="mt-2 pl-4">
+                    <p className={`text-slate-600 dark:text-slate-400 text-sm leading-relaxed ${!isExpanded && isLong ? "line-clamp-3" : ""}`}>
+                      {term.description}
+                    </p>
+                    {isLong && (
+                      <button
+                        onClick={() => toggleExpand(term.id)}
+                        className="mt-1 text-blue-600 dark:text-blue-400 text-xs font-medium hover:underline"
+                      >
+                        {isExpanded ? "Yig'ish ↑" : "Ko'proq ko'rish ↓"}
+                      </button>
+                    )}
                   </div>
                 </div>
-                
-                <div className="mt-6 pt-4 border-t border-slate-50 dark:border-slate-800 flex justify-between items-center text-[10px] text-slate-300 dark:text-slate-600 font-bold uppercase tracking-tighter">
-                  <span>{dict.terms.about}</span>
-                  <div className="flex gap-1">
-                    <span>{dict?.common?.last_updated || dict.updated_at}:</span>
-                    <span>{term.updated_at ? term.updated_at.toString().split('T')[0] : "—"}</span>
+
+                {/* Other language translations */}
+                {otherTranslations.length > 0 && (
+                  <div className="px-5 pb-4 pl-9 flex flex-wrap gap-2">
+                    {otherTranslations.map((tr) => (
+                      <div
+                        key={tr.id}
+                        className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg border text-xs font-medium ${langColors[tr.language.code] || "bg-slate-50 text-slate-600 border-slate-200"}`}
+                      >
+                        <span>{tr.language.flag}</span>
+                        <span className="truncate max-w-[180px]">{tr.name}</span>
+                      </div>
+                    ))}
                   </div>
-                </div>
-              </Card>
-            ))}
-          </div>
+                )}
+              </article>
+            );
+          })
         ) : (
-          <div className="py-20 text-center bg-slate-50 dark:bg-slate-900/50 rounded-[3rem] border-2 border-dashed border-slate-200 dark:border-slate-800">
-            <p className="text-slate-400 dark:text-slate-600 font-medium text-lg">Ma&apos;lumot topilmadi.</p>
+          <div className="py-20 text-center rounded-2xl border-2 border-dashed border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50">
+            <BookOpen className="w-10 h-10 mx-auto text-slate-300 dark:text-slate-700 mb-3" />
+            <p className="text-slate-400 dark:text-slate-600 text-sm font-medium">
+              {dict.pagination?.noResults || "Natija topilmadi"}
+            </p>
           </div>
         )}
       </div>
-            
-      {/* 4. PAGINATION CONTROLS */}
+
+      {/* ── PAGINATION ── */}
       {data.totalPages > 1 && (
-        <div className="flex flex-col items-center gap-4 mt-12 pb-10">
-          <div className="flex justify-center items-center gap-2">
-            <Button
-              variant="outline"
-              disabled={currentPage === 1}
-              onClick={() => setCurrentPage(p => p - 1)}
-              className="rounded-xl border-slate-200 dark:border-slate-700 h-10 dark:text-slate-300"
-            >
-              <ChevronLeft className="w-4 h-4 mr-1" /> {dict.pagination.prev || "Oldingi"}
-            </Button>
+        <div className="flex items-center justify-center gap-2 pt-4 pb-10">
+          <Button
+            variant="outline"
+            size="icon"
+            disabled={currentPage === 1}
+            onClick={() => goPage(currentPage - 1)}
+            className="h-9 w-9 rounded-xl"
+          >
+            <ChevronLeft className="w-4 h-4" />
+          </Button>
 
-            <div className="flex gap-1">
-              {[...Array(data.totalPages)].map((_, i) => {
-                const pageNum = i + 1;
-                if (pageNum === 1 || pageNum === data.totalPages || (pageNum >= currentPage - 1 && pageNum <= currentPage + 1)) {
-                  return (
-                    <Button
-                      key={pageNum}
-                      variant={currentPage === pageNum ? "default" : "ghost"}
-                      onClick={() => setCurrentPage(pageNum)}
-                      className={`w-10 h-10 rounded-xl font-bold transition-all ${
-                        currentPage === pageNum 
-                          ? 'bg-blue-600 dark:bg-blue-500 text-white' 
-                          : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
-                      }`}
-                    >
-                      {pageNum}
-                    </Button>
-                  );
-                } else if (pageNum === currentPage - 2 || pageNum === currentPage + 2) {
-                  return <span key={pageNum} className="flex items-end px-1 text-slate-400 dark:text-slate-600">...</span>;
-                }
-                return null;
-              })}
-            </div>
-
-            <Button
-              variant="outline"
-              disabled={currentPage === data.totalPages}
-              onClick={() => setCurrentPage(p => p + 1)}
-              className="rounded-xl border-slate-200 dark:border-slate-700 h-10 dark:text-slate-300"
-            >
-              {dict.pagination.next} <ChevronRight className="w-4 h-4 ml-1" />
-            </Button>
+          <div className="flex gap-1">
+            {Array.from({ length: data.totalPages }, (_, i) => i + 1)
+              .filter((p) => p === 1 || p === data.totalPages || Math.abs(p - currentPage) <= 1)
+              .reduce<(number | "…")[]>((acc, p, idx, arr) => {
+                if (idx > 0 && p - (arr[idx - 1] as number) > 1) acc.push("…");
+                acc.push(p);
+                return acc;
+              }, [])
+              .map((p, i) =>
+                p === "…" ? (
+                  <span key={`e${i}`} className="w-9 h-9 flex items-center justify-center text-slate-400 text-sm">
+                    …
+                  </span>
+                ) : (
+                  <Button
+                    key={p}
+                    variant={currentPage === p ? "default" : "ghost"}
+                    size="icon"
+                    onClick={() => goPage(p as number)}
+                    className={`h-9 w-9 rounded-xl font-bold text-sm ${
+                      currentPage === p
+                        ? "bg-blue-600 text-white hover:bg-blue-700"
+                        : "text-slate-600 dark:text-slate-400"
+                    }`}
+                  >
+                    {p}
+                  </Button>
+                )
+              )}
           </div>
-          
-          <p className="text-slate-400 dark:text-slate-600 text-xs font-medium uppercase tracking-widest">
-            {currentPage}- {dict.pagination.page} / {dict.pagination.total} {data.totalCount} {dict.pagination.end}
-          </p>
+
+          <Button
+            variant="outline"
+            size="icon"
+            disabled={currentPage === data.totalPages}
+            onClick={() => goPage(currentPage + 1)}
+            className="h-9 w-9 rounded-xl"
+          >
+            <ChevronRight className="w-4 h-4" />
+          </Button>
         </div>
       )}
     </div>
