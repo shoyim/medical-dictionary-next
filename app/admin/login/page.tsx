@@ -97,7 +97,7 @@ export default function AdminLogin() {
         </div>
 
         <p className="mt-6 text-center text-xs text-slate-400">
-          © {new Date().getFullYear()} MedTerm.uz • SamDCHTI
+          © {new Date().getFullYear()} Medical Science Dictionary
         </p>
       </div>
     </div>

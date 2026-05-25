@@ -27,13 +27,13 @@ export default async function Page({
   const websiteSchema = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    name: "MedTerm.uz",
+    name: dict.siteName,
     url: BASE_URL,
     description: dict.siteDescription,
     inLanguage: [lang],
     publisher: {
       "@type": "Organization",
-      name: "SamDCHTI",
+      name: dict.siteName,
       url: BASE_URL,
     },
     potentialAction: {

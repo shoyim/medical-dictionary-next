@@ -11,17 +11,17 @@ const pageMeta = {
     uz: {
       title: "Medical Science Dictionary – Tibbiy Terminlar Lug'ati",
       description:
-        "O'zbek, rus va ingliz tillaridagi tibbiy terminlar, qisqartmalar va tushunchalarning ko'p tilli professional lug'ati. SamDCHTI.",
+        "O'zbek, rus va ingliz tillaridagi tibbiy terminlar, qisqartmalar va tushunchalarning ko'p tilli professional lug'ati.",
     },
     ru: {
       title: "Medical Science Dictionary – Медицинский словарь терминов",
       description:
-        "Многоязычный профессиональный словарь медицинских терминов, аббревиатур и понятий на узбекском, русском и английском языках. СамГИИЯ.",
+        "Многоязычный профессиональный словарь медицинских терминов, аббревиатур и понятий на узбекском, русском и английском языках.",
     },
     en: {
       title: "Medical Science Dictionary – Medical Terminology Dictionary",
       description:
-        "A multilingual professional medical dictionary of terms, abbreviations and definitions in Uzbek, Russian and English. SamSIFL.",
+        "A multilingual professional medical dictionary of terms, abbreviations and definitions in Uzbek, Russian and English.",
     },
   },
   terms: {
@@ -79,17 +79,17 @@ const pageMeta = {
     uz: {
       title: "Biz Haqimizda | Medical Science Dictionary",
       description:
-        "Medical Science Dictionary loyihasi haqida: muallif Шахноза Абдухафизовна, SamDCHTI, va ko'p tilli tibbiy lug'at tarixiga oid ma'lumotlar.",
+        "Medical Science Dictionary loyihasi haqida: muallif Шахноза Абдухафизовна va ko'p tilli tibbiy lug'at tarixiga oid ma'lumotlar.",
     },
     ru: {
       title: "О нас | Medical Science Dictionary",
       description:
-        "О проекте Medical Science Dictionary: автор Шахноза Абдухафизовна, СамГИИЯ и история создания многоязычного медицинского словаря.",
+        "О проекте Medical Science Dictionary: автор Шахноза Абдухафизовна и история создания многоязычного медицинского словаря.",
     },
     en: {
       title: "About | Medical Science Dictionary",
       description:
-        "About the Medical Science Dictionary project: author Shakhnoza Abdukhafizona, SamSIFL and the history of the multilingual medical dictionary.",
+        "About the Medical Science Dictionary project: author Shakhnoza Abdukhafizona and the history of the multilingual medical dictionary.",
     },
   },
 } as const;

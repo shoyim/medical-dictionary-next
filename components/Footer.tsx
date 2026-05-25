@@ -92,7 +92,7 @@ export const Footer = ({ dict, lang }: { dict: any, lang: string }) => {
               </Link>
             </div>
             <p className="text-[10px] font-bold text-slate-400 dark:text-slate-600 uppercase tracking-widest">
-              SamDCHTI • 2024 – {new Date().getFullYear()}
+              2024 – {new Date().getFullYear()}
             </p>
           </div>
         </div>

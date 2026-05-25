@@ -36,7 +36,7 @@ export default async function TermsPage({
     inLanguage: [lang, "uz", "ru", "en"],
     creator: {
       "@type": "Organization",
-      name: "SamDCHTI",
+      name: dict.siteName,
       url: BASE_URL,
     },
   };

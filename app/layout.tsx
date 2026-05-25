@@ -24,7 +24,6 @@ export const metadata: Metadata = {
     "tibbiyot",
     "qisqartmalar",
     "o'zbekcha tibbiy lug'at",
-    "SamDCHTI",
   ],
   metadataBase: new URL(BASE_URL),
 

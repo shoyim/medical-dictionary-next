@@ -282,7 +282,7 @@ export function MedicalTranslator({ dict }: { dict: any }) {
         {/* ── Translate button bar ── */}
         <div className="flex items-center justify-between gap-3 px-5 py-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50">
           <p className="text-xs text-slate-400 dark:text-slate-500 hidden sm:block">
-            SamDCHTI tibbiy terminlar bazasi
+            Medical Science Dictionary bazasi
           </p>
           <button
             onClick={handleTranslate}

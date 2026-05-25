@@ -77,7 +77,7 @@ export async function GET() {
 
         {/* Footer */}
         <p style={{ position: "absolute", bottom: 60, left: 80, fontSize: 20, color: "#94a3b8", fontWeight: 600, margin: 0 }}>
-          SamDCHTI • Medical Science Dictionary
+          Medical Science Dictionary
         </p>
 
         {/* Decorative circle */}
