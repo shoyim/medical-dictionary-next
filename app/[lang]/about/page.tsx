@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { getDictionary } from "@/lib/get-dictionary";
-import { BookOpen, Search, Languages, FileText, Send, Sparkles } from "lucide-react";
+import { BookOpen, Search, Languages, FileText, Send, Sparkles, GraduationCap, ExternalLink } from "lucide-react";
 import Link from "next/link";
 import { JsonLd } from "@/components/JsonLd";
 import { buildMetadata } from "@/lib/seo";
@@ -90,31 +90,74 @@ export default async function AboutPage({ params }: { params: Promise<{ lang: st
             </div>
           </div>
 
-          {/* CONTACT */}
+          {/* AUTHOR */}
           <div className="space-y-6">
             <h2 className="text-xl font-black uppercase tracking-tight text-slate-800 dark:text-slate-200">
               {t.contact_title}
             </h2>
-            <Link
-              href="https://t.me/yusupova_shakhnoza"
-              target="_blank"
-              className="flex items-center gap-5 p-7 bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-blue-200 dark:hover:border-blue-900 transition-all group"
-            >
-              <div className="p-4 bg-blue-50 dark:bg-blue-950/40 rounded-2xl text-blue-600 dark:text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-colors">
-                <Send className="w-6 h-6" />
+            <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm overflow-hidden">
+              {/* Top accent */}
+              <div className="h-1.5 bg-gradient-to-r from-blue-500 to-indigo-500" />
+
+              <div className="p-8 space-y-6">
+                {/* Name & label */}
+                <div className="space-y-1">
+                  <p className="text-[10px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-widest">
+                    {t.author_label}
+                  </p>
+                  <h3 className="text-2xl font-black text-slate-900 dark:text-white uppercase tracking-tight">
+                    {t.author_name}
+                  </h3>
+                </div>
+
+                {/* Details */}
+                <div className="space-y-3">
+                  <div className="flex items-start gap-3">
+                    <div className="mt-0.5 p-1.5 bg-blue-50 dark:bg-blue-950/40 rounded-lg text-blue-600 dark:text-blue-400 flex-shrink-0">
+                      <GraduationCap className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-bold text-slate-800 dark:text-slate-200">{t.author_degree}</p>
+                      <p className="text-sm text-slate-500 dark:text-slate-400">{t.author_position}</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-3">
+                    <div className="mt-0.5 p-1.5 bg-blue-50 dark:bg-blue-950/40 rounded-lg text-blue-600 dark:text-blue-400 flex-shrink-0">
+                      <BookOpen className="w-4 h-4" />
+                    </div>
+                    <p className="text-sm text-slate-600 dark:text-slate-300 font-medium">{t.author_institute}</p>
+                  </div>
+
+                  <div className="flex items-start gap-3">
+                    <div className="mt-0.5 p-1.5 bg-purple-50 dark:bg-purple-950/40 rounded-lg text-purple-600 dark:text-purple-400 flex-shrink-0">
+                      <FileText className="w-4 h-4" />
+                    </div>
+                    <p className="text-sm text-slate-500 dark:text-slate-400 italic">{t.author_research}</p>
+                  </div>
+                </div>
+
+                {/* Links */}
+                <div className="flex flex-wrap gap-3 pt-2">
+                  <Link
+                    href="https://scholar.google.com/citations?user=jYEspEoAAAAJ&hl=ru"
+                    target="_blank"
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-slate-50 dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-blue-950/40 text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 rounded-xl text-sm font-semibold transition-colors border border-slate-200 dark:border-slate-700"
+                  >
+                    <ExternalLink className="w-4 h-4" />
+                    Google Scholar
+                  </Link>
+                  <Link
+                    href="https://t.me/yusupova_shakhnoza"
+                    target="_blank"
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-semibold transition-colors"
+                  >
+                    <Send className="w-4 h-4" />
+                    Telegram
+                  </Link>
+                </div>
               </div>
-              <div>
-                <p className="text-[10px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-widest mb-1">
-                  {t.author_label}
-                </p>
-                <p className="text-sm text-slate-500 dark:text-slate-400">
-                  {t.author_desc}
-                </p>
-                <p className="text-xs font-bold text-slate-400 dark:text-slate-500 mt-1">
-                  @yusupova_shakhnoza
-                </p>
-              </div>
-            </Link>
+            </div>
           </div>
 
         </div>

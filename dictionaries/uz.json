@@ -65,9 +65,13 @@
         "feature_search_desc": "Harf bo'yicha va kalit so'z orqali bir zumda natija toping",
         "feature_multilang": "Ko'p tilli interfeys",
         "feature_multilang_desc": "Sayt interfeysi ham uch tilda ishlaydi",
-        "contact_title": "Aloqa",
+        "contact_title": "Muallif haqida",
         "author_label": "Loyiha muallifi",
-        "author_desc": "Lug'atning ilmiy muharririsi va loyiha rahbari"
+        "author_name": "Yusupova Shaxnoza Abduxafizovna",
+        "author_position": "Ingliz tili o'qitish metodikasi kafedrasi mudiri",
+        "author_degree": "Filologiya fanlari nomzodi, PhD",
+        "author_institute": "Samarqand davlat chet tillar instituti",
+        "author_research": "Onlayn ta'lim sharoitida talabalarning mustaqil faoliyatini rivojlantirish"
     },
 
     "footer": {

@@ -65,9 +65,13 @@
         "feature_search_desc": "Instant search by letter or keyword",
         "feature_multilang": "Multilingual Interface",
         "feature_multilang_desc": "The site interface works in three languages",
-        "contact_title": "Contact",
+        "contact_title": "About the Author",
         "author_label": "Project Author",
-        "author_desc": "Scientific editor of the dictionary and project director"
+        "author_name": "Yusupova Shakhnoza Abdukhafizovna",
+        "author_position": "Head of the Department of English Language Teaching Methodology",
+        "author_degree": "Doctor of Philological Sciences (PhD)",
+        "author_institute": "Samarkand State Institute of Foreign Languages",
+        "author_research": "Development of students' independent activities in online learning"
     },
 
     "footer": {
