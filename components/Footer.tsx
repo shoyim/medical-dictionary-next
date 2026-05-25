@@ -100,7 +100,7 @@ export const Footer = ({ dict, lang }: { dict: any, lang: string }) => {
         {/* PASTI: MUALLIFLIK HUQUQI */}
         <div className="pt-8 border-t border-slate-50 dark:border-slate-900 flex items-center justify-center">
           <p className="text-xs text-slate-400 dark:text-slate-600 font-medium">
-            © {new Date().getFullYear()} MedTerm.uz. All rights reserved.
+            © {new Date().getFullYear()} Medical Science Dictionary. All rights reserved.
           </p>
         </div>
       </div>

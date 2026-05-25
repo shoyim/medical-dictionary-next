@@ -9,17 +9,17 @@ export type SiteLocale = (typeof LOCALES)[number];
 const pageMeta = {
   home: {
     uz: {
-      title: "MedTerm.uz – Tibbiy Terminlar Lug'ati",
+      title: "Medical Science Dictionary – Tibbiy Terminlar Lug'ati",
       description:
         "O'zbek, rus va ingliz tillaridagi tibbiy terminlar, qisqartmalar va tushunchalarning ko'p tilli professional lug'ati. SamDCHTI.",
     },
     ru: {
-      title: "MedTerm.uz – Медицинский словарь терминов",
+      title: "Medical Science Dictionary – Медицинский словарь терминов",
       description:
         "Многоязычный профессиональный словарь медицинских терминов, аббревиатур и понятий на узбекском, русском и английском языках. СамГИИЯ.",
     },
     en: {
-      title: "MedTerm.uz – Medical Terminology Dictionary",
+      title: "Medical Science Dictionary – Medical Terminology Dictionary",
       description:
         "A multilingual professional medical dictionary of terms, abbreviations and definitions in Uzbek, Russian and English. SamSIFL.",
     },
@@ -60,36 +60,36 @@ const pageMeta = {
   },
   stats: {
     uz: {
-      title: "Statistika | MedTerm.uz",
+      title: "Statistika | Medical Science Dictionary",
       description:
-        "MedTerm.uz platformasidagi terminlar soni, tillar va so'nggi qo'shimchalar haqida umumiy statistika.",
+        "Medical Science Dictionary platformasidagi terminlar soni, tillar va so'nggi qo'shimchalar haqida umumiy statistika.",
     },
     ru: {
-      title: "Статистика | MedTerm.uz",
+      title: "Статистика | Medical Science Dictionary",
       description:
-        "Общая статистика платформы MedTerm.uz: количество терминов, языков и последние добавления.",
+        "Общая статистика платформы Medical Science Dictionary: количество терминов, языков и последние добавления.",
     },
     en: {
-      title: "Statistics | MedTerm.uz",
+      title: "Statistics | Medical Science Dictionary",
       description:
-        "MedTerm.uz platform statistics: number of terms, languages and recent additions.",
+        "Medical Science Dictionary platform statistics: number of terms, languages and recent additions.",
     },
   },
   about: {
     uz: {
-      title: "Biz Haqimizda | MedTerm.uz",
+      title: "Biz Haqimizda | Medical Science Dictionary",
       description:
-        "MedTerm.uz loyihasi haqida: muallif Шахноза Абдухафизовна, SamDCHTI, va ko'p tilli tibbiy lug'at tarixiga oid ma'lumotlar.",
+        "Medical Science Dictionary loyihasi haqida: muallif Шахноза Абдухафизовна, SamDCHTI, va ko'p tilli tibbiy lug'at tarixiga oid ma'lumotlar.",
     },
     ru: {
-      title: "О нас | MedTerm.uz",
+      title: "О нас | Medical Science Dictionary",
       description:
-        "О проекте MedTerm.uz: автор Шахноза Абдухафизовна, СамГИИЯ и история создания многоязычного медицинского словаря.",
+        "О проекте Medical Science Dictionary: автор Шахноза Абдухафизовна, СамГИИЯ и история создания многоязычного медицинского словаря.",
     },
     en: {
-      title: "About | MedTerm.uz",
+      title: "About | Medical Science Dictionary",
       description:
-        "About the MedTerm.uz project: author Shakhnoza Abdukhafizona, SamSIFL and the history of the multilingual medical dictionary.",
+        "About the Medical Science Dictionary project: author Shakhnoza Abdukhafizona, SamSIFL and the history of the multilingual medical dictionary.",
     },
   },
 } as const;
@@ -135,13 +135,13 @@ export function buildMetadata(
       url: canonical,
       locale: ogLocaleMap[locale],
       type: "website",
-      siteName: "MedTerm.uz",
+      siteName: "Medical Science Dictionary",
       images: [
         {
           url: `${BASE_URL}/og`,
           width: 1200,
           height: 630,
-          alt: "MedTerm.uz",
+          alt: "Medical Science Dictionary",
         },
       ],
     },

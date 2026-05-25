@@ -9,12 +9,13 @@ const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://medterm.uz";
 
 export const metadata: Metadata = {
   title: {
-    default: "MedTerm.uz | Tibbiy Terminlar Lug'ati",
-    template: "%s | MedTerm.uz",
+    default: "Medical Science Dictionary | Tibbiy Terminlar Lug'ati",
+    template: "%s | Medical Science Dictionary",
   },
   description:
     "O'zbek, rus va ingliz tillaridagi mukammal tibbiy terminlar lug'ati. Tibbiy terminlar, qisqartmalar va ularning ta'riflari.",
   keywords: [
+    "medical science dictionary",
     "medterm",
     "medterm.uz",
     "tibbiy lug'at",
@@ -28,19 +29,19 @@ export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
 
   openGraph: {
-    title: "MedTerm.uz | Tibbiy Terminlar Lug'ati",
+    title: "Medical Science Dictionary | Tibbiy Terminlar Lug'ati",
     description:
       "O'zbek, rus va ingliz tillaridagi professional tibbiy terminlar bazasi",
     type: "website",
     locale: "uz_UZ",
     url: BASE_URL,
-    siteName: "MedTerm.uz",
-    images: [{ url: "/og", width: 1200, height: 630, alt: "MedTerm.uz" }],
+    siteName: "Medical Science Dictionary",
+    images: [{ url: "/og", width: 1200, height: 630, alt: "Medical Science Dictionary" }],
   },
 
   twitter: {
     card: "summary_large_image",
-    title: "MedTerm.uz | Tibbiy Terminlar Lug'ati",
+    title: "Medical Science Dictionary | Tibbiy Terminlar Lug'ati",
     description: "Tibbiy terminlar va qisqartmalar bo'yicha professional lug'at",
     images: ["/og"],
   },

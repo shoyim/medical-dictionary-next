@@ -43,10 +43,9 @@ export default function AdminLogin() {
               <rect x="7" y="14.5" width="22" height="7" rx="2.5" fill="white" />
               <rect x="14.5" y="7" width="7" height="22" rx="2.5" fill="white" />
             </svg>
-            <div className="flex items-baseline gap-[1px]">
-              <span className="font-black text-2xl tracking-tight text-slate-900">med</span>
-              <span className="font-black text-2xl tracking-tight text-blue-600">term</span>
-              <span className="font-bold text-base text-slate-400">.uz</span>
+            <div className="flex flex-col leading-tight text-left">
+              <span className="font-black text-lg tracking-tight text-slate-900 uppercase">Medical Science</span>
+              <span className="font-black text-lg tracking-tight text-blue-600 uppercase">Dictionary</span>
             </div>
           </div>
           <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Admin Panel</p>

@@ -39,15 +39,12 @@ export async function GET() {
           </div>
 
           {/* Brand text */}
-          <div style={{ display: "flex", alignItems: "baseline", gap: "2px" }}>
-            <span style={{ fontSize: 64, fontWeight: 900, color: "#0f172a", lineHeight: 1 }}>
-              med
+          <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+            <span style={{ fontSize: 52, fontWeight: 900, color: "#0f172a", lineHeight: 1, textTransform: "uppercase" }}>
+              Medical Science
             </span>
-            <span style={{ fontSize: 64, fontWeight: 900, color: "#2563eb", lineHeight: 1 }}>
-              term
-            </span>
-            <span style={{ fontSize: 36, fontWeight: 700, color: "#94a3b8", lineHeight: 1 }}>
-              .uz
+            <span style={{ fontSize: 52, fontWeight: 900, color: "#2563eb", lineHeight: 1, textTransform: "uppercase" }}>
+              Dictionary
             </span>
           </div>
         </div>
@@ -80,7 +77,7 @@ export async function GET() {
 
         {/* Footer */}
         <p style={{ position: "absolute", bottom: 60, left: 80, fontSize: 20, color: "#94a3b8", fontWeight: 600, margin: 0 }}>
-          SamDCHTI • medterm.uz
+          SamDCHTI • Medical Science Dictionary
         </p>
 
         {/* Decorative circle */}

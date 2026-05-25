@@ -44,15 +44,12 @@ export function Logo({ lang = 'uz', size = 'md', asLink = true }: LogoProps) {
   const content = (
     <>
       <LogoIcon size={size} />
-      <div className="flex items-baseline gap-[1px] leading-none">
-        <span className={`font-black tracking-tight text-slate-900 dark:text-white ${textSizes[size]}`}>
-          med
+      <div className="flex flex-col leading-tight">
+        <span className={`font-black tracking-tight text-slate-900 dark:text-white uppercase ${textSizes[size]}`}>
+          Medical Science
         </span>
-        <span className={`font-black tracking-tight text-blue-600 dark:text-blue-400 ${textSizes[size]}`}>
-          term
-        </span>
-        <span className={`font-bold text-slate-400 dark:text-slate-500 ${dotSizes[size]}`}>
-          .uz
+        <span className={`font-black tracking-tight text-blue-600 dark:text-blue-400 uppercase ${dotSizes[size]}`}>
+          Dictionary
         </span>
       </div>
     </>

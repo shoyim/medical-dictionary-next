@@ -70,10 +70,9 @@ export default async function Page({
 
             {/* Matn qismi */}
             <div className="flex-1 space-y-6 text-center lg:text-left animate-in fade-in slide-in-from-left duration-1000">
-              <h1 className="text-5xl md:text-7xl font-black text-slate-900 dark:text-white leading-[1.1] tracking-tight">
-                <span className="text-slate-900 dark:text-white">med</span>
-                <span className="text-blue-600 dark:text-blue-400">term</span>
-                <span className="text-slate-400 text-4xl md:text-5xl">.uz</span>
+              <h1 className="text-4xl md:text-6xl font-black text-slate-900 dark:text-white leading-[1.1] tracking-tight uppercase">
+                <span className="text-slate-900 dark:text-white">Medical Science </span>
+                <span className="text-blue-600 dark:text-blue-400">Dictionary</span>
               </h1>
               <p className="text-lg md:text-xl text-slate-500 dark:text-slate-400 max-w-2xl leading-relaxed">
                 {dict.siteDescription}
@@ -86,7 +85,7 @@ export default async function Page({
                 <div className="absolute inset-0 bg-blue-100 dark:bg-blue-900/20 rounded-full blur-3xl opacity-50 animate-pulse scale-110 group-hover:scale-125 transition-transform duration-700" />
                 <Image
                   src="/undraw_doctors_djoj.svg"
-                  alt="Tibbiy mutaxassislar – MedTerm.uz"
+                  alt="Tibbiy mutaxassislar – Medical Science Dictionary"
                   width={480}
                   height={480}
                   priority
