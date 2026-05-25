@@ -38,7 +38,7 @@ export const Footer = ({ dict, lang }: { dict: any, lang: string }) => {
                   </Link>
                 </li>
                 <li>
-                  <Link href={`/${lang}/abbreviations`} className="text-sm text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                  <Link href={`/${lang}/abbreviation`} className="text-sm text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                     {t.abbreviations}
                   </Link>
                 </li>
@@ -47,7 +47,7 @@ export const Footer = ({ dict, lang }: { dict: any, lang: string }) => {
             <div className="space-y-4 pt-9">
               <ul className="space-y-2">
                 <li>
-                  <Link href={`/${lang}/statistics`} className="text-sm text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                  <Link href={`/${lang}/stats`} className="text-sm text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                     {t.statistics}
                   </Link>
                 </li>
