@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,7 +11,6 @@ export default function AdminLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,8 +22,7 @@ export default function AdminLogin() {
     });
     if (res?.ok) {
       toast.success("Muvaffaqiyatli kirildi!", { description: "Admin panelga yo'naltirilmoqda..." });
-      router.push("/admin/dashboard");
-      router.refresh();
+      window.location.href = "/admin/dashboard";
     } else {
       toast.error("Kirish xatosi", { description: "Email yoki parol noto'g'ri. Qayta urinib ko'ring." });
       setLoading(false);
