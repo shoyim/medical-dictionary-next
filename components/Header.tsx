@@ -30,7 +30,7 @@ export const Header = async ({ dict, lang }: { dict: any; lang: string }) => {
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         
         {/* LOGOTIP */}
-        <Logo lang={lang} size="md" />
+        <Logo lang={lang} size="md" name={dict.siteName} />
         
         {/* DESKTOP NAVIGATSIYA */}
         <div className="hidden lg:flex items-center">

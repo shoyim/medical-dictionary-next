@@ -13,7 +13,7 @@ export const Footer = ({ dict, lang }: { dict: any, lang: string }) => {
           {/* 1. LOGOTIP VA TAVSIF */}
           <div className="space-y-4 text-center md:text-left">
             <div className="flex items-center justify-center md:justify-start">
-              <Logo lang={lang} size="md" />
+              <Logo lang={lang} size="md" name={dict.siteName} />
             </div>
             <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed max-w-xs mx-auto md:mx-0">
               {dict.about.subtitle || "Ruscha-Inglizcha tibbiy terminologik lug'at platformasi."}
@@ -100,7 +100,7 @@ export const Footer = ({ dict, lang }: { dict: any, lang: string }) => {
         {/* PASTI: MUALLIFLIK HUQUQI */}
         <div className="pt-8 border-t border-slate-50 dark:border-slate-900 flex items-center justify-center">
           <p className="text-xs text-slate-400 dark:text-slate-600 font-medium">
-            © {new Date().getFullYear()} Medical Science Dictionary. All rights reserved.
+            © {new Date().getFullYear()} {dict.siteName}. All rights reserved.
           </p>
         </div>
       </div>

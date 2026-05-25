@@ -4,6 +4,7 @@ interface LogoProps {
   lang?: string;
   size?: 'sm' | 'md' | 'lg';
   asLink?: boolean;
+  name?: string;
 }
 
 function LogoIcon({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' }) {
@@ -29,7 +30,7 @@ function LogoIcon({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' }) {
   );
 }
 
-export function Logo({ lang = 'uz', size = 'md', asLink = true }: LogoProps) {
+export function Logo({ lang = 'uz', size = 'md', asLink = true, name = 'Medical Science Dictionary' }: LogoProps) {
   const textSizes = {
     sm: 'text-base',
     md: 'text-xl',
@@ -41,16 +42,23 @@ export function Logo({ lang = 'uz', size = 'md', asLink = true }: LogoProps) {
     lg: 'text-base',
   };
 
+  const words = name.trim().split(' ');
+  const mid = Math.ceil(words.length / 2);
+  const line1 = words.slice(0, mid).join(' ');
+  const line2 = words.slice(mid).join(' ');
+
   const content = (
     <>
       <LogoIcon size={size} />
       <div className="flex flex-col leading-tight">
         <span className={`font-black tracking-tight text-slate-900 dark:text-white uppercase ${textSizes[size]}`}>
-          Medical Science
+          {line1}
         </span>
-        <span className={`font-black tracking-tight text-blue-600 dark:text-blue-400 uppercase ${dotSizes[size]}`}>
-          Dictionary
-        </span>
+        {line2 && (
+          <span className={`font-black tracking-tight text-blue-600 dark:text-blue-400 uppercase ${dotSizes[size]}`}>
+            {line2}
+          </span>
+        )}
       </div>
     </>
   );

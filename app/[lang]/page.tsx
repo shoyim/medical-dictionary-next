@@ -71,8 +71,7 @@ export default async function Page({
             {/* Matn qismi */}
             <div className="flex-1 space-y-6 text-center lg:text-left animate-in fade-in slide-in-from-left duration-1000">
               <h1 className="text-4xl md:text-6xl font-black text-slate-900 dark:text-white leading-[1.1] tracking-tight uppercase">
-                <span className="text-slate-900 dark:text-white">Medical Science </span>
-                <span className="text-blue-600 dark:text-blue-400">Dictionary</span>
+                {dict.siteName}
               </h1>
               <p className="text-lg md:text-xl text-slate-500 dark:text-slate-400 max-w-2xl leading-relaxed">
                 {dict.siteDescription}
