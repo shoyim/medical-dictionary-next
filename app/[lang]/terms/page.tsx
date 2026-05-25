@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import type { Metadata } from "next";
 import { getLanguages } from "@/lib/actions";
 import { MedicalDictionary } from "@/components/MedicalDictionary";
