@@ -100,7 +100,9 @@ export function StatisticsCards({ stats, dict }: StatsProps) {
                 <div key={lang.code} className="space-y-1.5">
                   <div className="flex items-center justify-between text-sm">
                     <span className="font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-2">
-                      <span className="text-lg">{lang.flag}</span>
+                      {lang.flag && (
+                        <img src={lang.flag} alt={lang.code} className="w-5 h-4 object-cover rounded-sm flex-shrink-0" />
+                      )}
                       {lang.name}
                     </span>
                     <span className="text-slate-500 dark:text-slate-400 tabular-nums font-medium">

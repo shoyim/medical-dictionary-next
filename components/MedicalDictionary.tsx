@@ -254,7 +254,9 @@ export function MedicalDictionary({
                         key={tr.id}
                         className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg border text-xs font-medium ${langColors[tr.language.code] || "bg-slate-50 text-slate-600 border-slate-200"}`}
                       >
-                        <span>{tr.language.flag}</span>
+                        {tr.language.flag && (
+                          <img src={tr.language.flag} alt={tr.language.code} className="w-5 h-4 object-cover rounded-sm flex-shrink-0" />
+                        )}
                         <span className="truncate max-w-[180px]">{tr.name}</span>
                       </div>
                     ))}
