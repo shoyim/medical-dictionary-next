@@ -8,23 +8,28 @@ import { Input } from "@/components/ui/input";
 import { Loader2 } from "lucide-react";
 
 export default function AdminLogin() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+
+    if (!email || !password) return;
+
     setLoading(true);
     const res = await signIn("credentials", {
       email,
       password,
       redirect: false,
     });
+
     if (res?.ok) {
       toast.success("Muvaffaqiyatli kirildi!", { description: "Admin panelga yo'naltirilmoqda..." });
       window.location.href = "/admin/dashboard";
     } else {
-      toast.error("Kirish xatosi", { description: "Email yoki parol noto'g'ri. Qayta urinib ko'ring." });
+      toast.error("Kirish xatosi", { description: "Email yoki parol noto'g'ri." });
       setLoading(false);
     }
   };
@@ -59,22 +64,26 @@ export default function AdminLogin() {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-1.5">
-              <label className="text-sm font-semibold text-slate-700">Email</label>
+              <label htmlFor="email" className="text-sm font-semibold text-slate-700">Email</label>
               <Input
+                id="email"
+                name="email"
                 type="email"
                 placeholder="admin@medterm.uz"
-                onChange={(e) => setEmail(e.target.value)}
+                autoComplete="email"
                 required
                 className="h-11 rounded-xl border-slate-200 focus-visible:ring-blue-500"
               />
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-sm font-semibold text-slate-700">Parol</label>
+              <label htmlFor="password" className="text-sm font-semibold text-slate-700">Parol</label>
               <Input
+                id="password"
+                name="password"
                 type="password"
                 placeholder="••••••••"
-                onChange={(e) => setPassword(e.target.value)}
+                autoComplete="current-password"
                 required
                 className="h-11 rounded-xl border-slate-200 focus-visible:ring-blue-500"
               />
@@ -85,9 +94,7 @@ export default function AdminLogin() {
               type="submit"
               className="w-full h-11 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold shadow-md shadow-blue-200 transition-all"
             >
-              {loading ? (
-                <Loader2 className="animate-spin mr-2 h-4 w-4" />
-              ) : null}
+              {loading ? <Loader2 className="animate-spin mr-2 h-4 w-4" /> : null}
               {loading ? "Kirilmoqda..." : "Tizimga kirish"}
             </Button>
           </form>
